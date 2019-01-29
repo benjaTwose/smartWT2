@@ -10,7 +10,11 @@ from django.http import HttpResponse
 from regtemp.models import Register
 
 
-def registertemp(request):
+def register_temp(request):
+    """ This view is a call to register temp.
+    it's used as API call for create a new reg in the database
+    This is called from crontab or other external program
+    """
     is_now = datetime.now()
     v_register = Register()
     v_register_temp = v_register.reg_temperature()
