@@ -20,3 +20,16 @@ def register_temp(request):
     v_register_temp = v_register.reg_temperature()
     html = "<html><body>It is now %s. And temperature is %s</body></html>" % (is_now, v_register_temp)
     return HttpResponse(html)
+
+
+def view_register_data(request):
+    calc_data = Register()
+    calc_data.objects.filter(raw_temp='%29%')
+
+    html = """<html><body>
+            {% for calc_data in results %}
+                <li>{{ calc_data|escape }}</l1>
+            {% endfor %}
+           
+           </body></html>"""
+    return HttpResponse(html)

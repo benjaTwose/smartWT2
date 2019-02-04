@@ -20,5 +20,7 @@ from regtemp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     # This path is for create a new temperature register data
-    path('regtemp/', views.register_temp, name='home')
+    path('regtemp/', views.register_temp, name='home'),
+    path('datareg/', views.view_register_data, name='home'),
+
 ]

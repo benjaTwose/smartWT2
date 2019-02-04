@@ -61,4 +61,5 @@ class Statistics(models.Model):
         :return:
         """
         calc_data = Register()
+        calc_data.objects.filter(raw_temp='%29%')
 

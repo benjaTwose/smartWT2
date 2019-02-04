@@ -5,7 +5,7 @@ environment:
 
 - virtualenv env
 - source env/bin/activate
-- install Python 3 and Django 2
+- install Python 3 and Django version 2.1.5
 
 create project
 - django-admin.py startproject smartWT2
