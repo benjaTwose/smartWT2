@@ -17,13 +17,15 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 
-from regtemp import views
-from controlwt import views
+from regtemp import views as regtemp_view
+from controlwt import views as control_vienw
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # This path is for create a new temperature register data
-    path('regtemp/', views.register_temp, name='home'),
-    path('datareg/', views.view_register_data, name='home'),
-    url(r'^$', views.turn_on, name='turn_on'),
-    url(r'^$', views.turn_off, name='turn_off'),
+    path('regtemp/', regtemp_view.register_temp, name='home'),
+    path('datareg/', regtemp_view.view_register_data, name='home'),
+    url(r'^$', control_vienw.turn_on, name='turn_on'),
+    url(r'^$', control_vienw.turn_off, name='turn_off'),
 ]
