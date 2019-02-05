@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from regtemp import views
+from django.conf.urls import url
 
+from regtemp import views
+from controlwt import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     # This path is for create a new temperature register data
     path('regtemp/', views.register_temp, name='home'),
     path('datareg/', views.view_register_data, name='home'),
-
+    url(r'^$', views.turn_on, name='turn_on'),
+    url(r'^$', views.turn_off, name='turn_off'),
 ]
