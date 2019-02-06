@@ -9,7 +9,7 @@ except RuntimeError:
     print(RuntimeError)
 
 # Create your models here.
-LED_PIN = 32
+LED_PIN = 7
 
 
 def turn_on(request):
