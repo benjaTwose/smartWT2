@@ -26,6 +26,6 @@ urlpatterns = [
     # This path is for create a new temperature register data
     path('regtemp/', regtemp_view.register_temp, name='home'),
     path('datareg/', regtemp_view.view_register_data, name='home'),
-    url(r'^$', control_vienw.turn_on, name='turn_on'),
-    url(r'^$', control_vienw.turn_off, name='turn_off'),
+    url(r'turnOn', control_vienw.turn_on, name='turn_on'),
+    url(r'turnOff', control_vienw.turn_off, name='turn_off'),
 ]
