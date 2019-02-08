@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import datetime
+from datetime import time
+import locale
 from smtconfigs.models import GeneralConfig
 
 
@@ -27,7 +29,7 @@ class Register(models.Model):
             return int(temperature)
 
         except IOError as e:
-            print (e)
+            print(e)
             return None
 
     def reg_temperature(self):
@@ -51,6 +53,16 @@ class Statistics(models.Model):
     t_average = models.IntegerField()
     t_count = models.IntegerField()
     t_control = models.BooleanField(default=False)
+    def savedata(self, a,b,c,d,e):
+        self.n_day = a
+        self.hour_minute = time(hour=b, minute=c)
+        if e > 0:
+            self.t_average = d / e
+        else:
+            self.t_average = d
+        self.t_count = e
+        self.save()
+        return 0
 
     def calc_statistics(self):
         """
@@ -60,6 +72,68 @@ class Statistics(models.Model):
         Then, only 30 days where calculated. The registers of raw data will be erased or transferred to another external db
         :return:
         """
-        calc_data = Register()
-        calc_data.objects.filter(raw_temp='%29%')
 
+        # locale.setlocale(locale.LC_ALL, 'ca_CA')
+
+        # Weekday as a decimal number, where 0 is Sunday and 6 is Saturday.
+        # TO DO  FOR EVERY DAY
+
+        cnt = 0
+        t_days = range(0, 7)
+        t_hours = range(9, 10)
+        t_minutes = range(0, 59)
+        calc_t_average = 0
+
+        for i_day in t_days:
+            for i_hour in t_hours:
+                cnt = 0
+                for i_minute in t_minutes:
+
+                    queryset = Register.objects.filter(date_reg__week_day=i_day,
+                                                       date_reg__time__hour=i_hour, date_reg__time__minute=i_minute)
+
+                    for field in queryset:
+                        # calc_hour_minute = str(datetime.strftime(queryset[i].date_reg,'%H:%M'))
+                        try:
+                            calc_t_average = int(field.raw_temp) + int(calc_t_average)
+                            cnt += 1
+                        except TypeError:
+                            cnt -= 1
+                            print(field.raw_temp)
+                    # return(str(calc_t_average)+ ' ' + str(calc_t_average/cnt))
+                    self.n_day = i_day
+                    self.hour_minute = time(hour=i_hour, minute=i_minute)
+                    if cnt > 0:
+                        self.t_average = calc_t_average / cnt
+                    else:
+                        self.t_average = calc_t_average
+                    self.t_count = cnt
+                    self.save()
+                    print(self.n_day, self.hour_minute, self.t_average, self.t_count)
+
+
+
+def ComputeStatistics():
+    t_days = range(0, 7)
+    t_hours = range(0, 24)
+    t_minutes = range(0, 59)
+    for i_day in t_days:
+        for i_hour in t_hours:
+
+            for i_minute in t_minutes:
+
+                queryset = Register.objects.filter(date_reg__week_day=i_day,
+                                                   date_reg__time__hour=i_hour, date_reg__time__minute=i_minute)
+                cnt = 0
+                calc_t_average = 0
+                if len(queryset) > 0:
+                    for field in queryset:
+                        try:
+                            calc_t_average = int(field.raw_temp) + int(calc_t_average)
+                            cnt += 1
+                        except TypeError:
+                            print(field.raw_temp)
+                    s=Statistics()
+                    a=Statistics.savedata(s, i_day, i_hour, i_minute, calc_t_average, cnt)
+            if len(queryset) > 0:
+                print(i_day, i_hour, i_minute, calc_t_average, cnt, len(queryset) )
