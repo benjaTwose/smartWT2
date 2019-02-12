@@ -74,11 +74,15 @@ class Statistics(models.Model):
         return 0
 
     def compute_control(self):
-
-        if self.t_average > GeneralConfig.temp_trigger_hr:
-            self.t_control = 1
-
-
+        ''' Compute the time to set power on and power off'''
+        gc = GeneralConfig()
+        if len(gc) > 0:
+            if self.t_average > GeneralConfig.temp_trigger_hr:
+                self.t_control = 1
+            else:
+                self.t_control = 0
+        else:
+            print("Configuration is not set. Can't calculate control trigger")
 
 
 def compute_statistics():
@@ -124,6 +128,8 @@ def compute_statistics():
 
             if len(queryset) > 0:
                 print(i_day, i_hour, i_minute, calc_t_average, cnt, len(queryset))
+
+
 
 
 

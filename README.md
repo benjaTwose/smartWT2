@@ -5,7 +5,7 @@ environment:
 
 - python venv
 - source env/bin/activate
-- install Python 3 and Django version 2.1.5 , Rpi ..
+- install Python 3 and Django version 2.1.6 , Rpi ..
     - pip install -r requirements.txt  
 
 

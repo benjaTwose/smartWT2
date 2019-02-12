@@ -37,10 +37,10 @@ class GeneralConfig(models.Model):
     '''
     # ,default='/sys/bus/w1/devices/28-000006961afe/w1_slave'
     datafile = models.CharField(max_length=200)
-    temp_trigger_lr = models.IntegerField
-    temp_trigger_hr = models.IntegerField
-    time_power_on_lr = models.IntegerField
-    time_power_on_hr = models.IntegerField
+    temp_trigger_lr = models.IntegerField(default=0)
+    temp_trigger_hr = models.IntegerField(default=0)
+    time_power_on_lr = models.IntegerField(default=0)
+    time_power_on_hr = models.IntegerField(default=0)
 
     def __unicode__(self):
         return '%s' % self.datafile
