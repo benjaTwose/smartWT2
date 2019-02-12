@@ -3,6 +3,7 @@ from datetime import datetime
 from datetime import time
 import locale
 from smtconfigs.models import GeneralConfig
+import sys
 
 
 class RegisterBkp(models.Model):
@@ -76,9 +77,25 @@ class Statistics(models.Model):
     def compute_control(self):
         ''' Compute the time to set power on and power off'''
         gc = GeneralConfig()
+        time_power = gc.time_power_on_lr
+
+
         if len(gc) > 0:
             if self.t_average > GeneralConfig.temp_trigger_hr:
                 self.t_control = 1
+                queryset = Statistics.objects.filter(n_day=self.n_day,
+                                                     hour_minute__range=[self.hour_minute,
+                                                                         (self.hour_minute - gc.time_power)])
+                # set control on, on all registers in the range
+                # before the first detection occurred
+                if len(queryset) > 0:
+                    for field in queryset:
+                        try:
+                            field.t_control = 1
+                        except:
+                            print("Unexpected error:", sys.exc_info()[0])
+                            raise
+
             else:
                 self.t_control = 0
         else:
@@ -111,7 +128,7 @@ def compute_statistics():
                             calc_t_average = int(field.raw_temp) + int(calc_t_average)
                             cnt += 1
 
-                            # bkp registers and delete data
+                            # bkp registers and delete raw data
                             rbkp = RegisterBkp()
                             rbkp.date_reg = field.date_reg
                             rbkp.raw_temp = field.raw_temp
@@ -129,7 +146,12 @@ def compute_statistics():
             if len(queryset) > 0:
                 print(i_day, i_hour, i_minute, calc_t_average, cnt, len(queryset))
 
-
-
-
+    queryset = Statistics.objects.all()
+    if len(queryset) > 0:
+        for field in queryset:
+            try:
+                field.compute_control(field)
+            except:
+                print("Unexpected error:", sys.exc_info()[0])
+                raise
 
