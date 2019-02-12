@@ -27,8 +27,20 @@ class ReducedRate(models.Model):
 
 
 class GeneralConfig(models.Model):
+    '''
+    parameters
+    datafile: file to read the temperature
+    temp_trigger_lr: low rate temperature trigger
+    temp_trigger_hr: high rate temperature trigger
+    time_power_on_lr: time powered on the water term in low rate
+    time_power_on_hr: time powered on the water term in high rate
+    '''
     # ,default='/sys/bus/w1/devices/28-000006961afe/w1_slave'
     datafile = models.CharField(max_length=200)
+    temp_trigger_lr = models.IntegerField
+    temp_trigger_hr = models.IntegerField
+    time_power_on_lr = models.IntegerField
+    time_power_on_hr = models.IntegerField
 
     def __unicode__(self):
         return '%s' % self.datafile
