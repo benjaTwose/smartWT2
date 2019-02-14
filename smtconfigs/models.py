@@ -42,7 +42,7 @@ class GeneralConfig(models.Model):
     time_power_on_lr = models.IntegerField(default=0)
     time_power_on_hr = models.IntegerField(default=0)
 
-    def __unicode__(self):
-        return '%s' % self.datafile
+#    def __unicode__(self):
+#        return '%s' % self.datafile
 
 

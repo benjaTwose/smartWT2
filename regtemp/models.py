@@ -1,7 +1,6 @@
 from django.db import models
 from datetime import datetime
 from datetime import time
-import locale
 from smtconfigs.models import GeneralConfig
 import sys
 
@@ -76,19 +75,28 @@ class Statistics(models.Model):
 
     def compute_control(self):
         ''' Compute the time to set power on and power off'''
-        gc = GeneralConfig()
-        time_power = gc.time_power_on_lr
+        gc = GeneralConfig.objects.last()
+        #time_power = time.strftime('%H:%M:%S', gmtime(gc.time_power_on_lr))
+        #time_power = datetime.strftime('%H:%M:%S', (second=gc.time_power_on_lr))
+        #dt_str = datetime.datetime.strftime(time_power, '%H:%M:%S')
+
+        time_power = datetime.strptime('00:00:'+ str(gc.time_power_on_lr), '%H:%M:%S')
+        time_power = time(hour=0, minute=gc.time_power_on_lr, second=0  )
 
 
-        if len(gc) > 0:
-            if self.t_average > GeneralConfig.temp_trigger_hr:
+        if time_power > time(hour=0, minute=0, second=0  ):
+            if self.t_average > gc.temp_trigger_hr:
                 self.t_control = 1
-                queryset = Statistics.objects.filter(n_day=self.n_day,
-                                                     hour_minute__range=[self.hour_minute,
-                                                                         (self.hour_minute - gc.time_power)])
+
+                print( self.hour_minute, time_power)
+
+                queryset = \
+                    Statistics.objects.filter(n_day=self.n_day,
+                                              hour_minute__range=[ self.hour_minute,
+                                                                   (self.hour_minute - time_power)])
                 # set control on, on all registers in the range
                 # before the first detection occurred
-                if len(queryset) > 0:
+                if len(queryset) > 0 or True:
                     for field in queryset:
                         try:
                             field.t_control = 1
@@ -150,7 +158,7 @@ def compute_statistics():
     if len(queryset) > 0:
         for field in queryset:
             try:
-                field.compute_control(field)
+                field.compute_control()
             except:
                 print("Unexpected error:", sys.exc_info()[0])
                 raise
