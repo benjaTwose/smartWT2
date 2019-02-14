@@ -63,14 +63,14 @@ class Statistics(models.Model):
     t_count = models.IntegerField()
     t_control = models.BooleanField(default=False)
 
-    def savedata(self, vday, vhour, vminute, vaverage, vcnt):
-        self.n_day = vday
-        self.hour_minute = time(hour=vhour, minute=vminute)
-        if vcnt > 0:
-            self.t_average = vaverage / vcnt
+    def savedata(self, v_day, v_hour, v_minute, v_average, v_cnt):
+        self.n_day = v_day
+        self.hour_minute = time(hour=v_hour, minute=v_minute)
+        if v_cnt > 0:
+            self.t_average = v_average / v_cnt
         else:
-            self.t_average = vaverage
-        self.t_count = vcnt
+            self.t_average = v_average
+        self.t_count = v_cnt
         self.save()
         return 0
 
