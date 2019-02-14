@@ -63,14 +63,14 @@ class Statistics(models.Model):
     t_count = models.IntegerField()
     t_control = models.BooleanField(default=False)
 
-    def savedata(self, a, b, c, d, e):
-        self.n_day = a
-        self.hour_minute = time(hour=b, minute=c)
-        if e > 0:
-            self.t_average = d / e
+    def savedata(self, vday, vhour, vminute, vaverage, vcnt):
+        self.n_day = vday
+        self.hour_minute = time(hour=vhour, minute=vminute)
+        if vcnt > 0:
+            self.t_average = vaverage / vcnt
         else:
-            self.t_average = d
-        self.t_count = e
+            self.t_average = vaverage
+        self.t_count = vcnt
         self.save()
         return 0
 
@@ -122,6 +122,7 @@ def compute_statistics():
     t_days = range(1, 8)
     t_hours = range(0, 24)
     t_minutes = range(0, 60)
+    print("ini ", datetime.now())
     for i_day in t_days:
         for i_hour in t_hours:
 
@@ -163,4 +164,6 @@ def compute_statistics():
             except:
                 print("Unexpected error:", sys.exc_info()[0])
                 raise
+
+    print("end ", datetime.now())
 
