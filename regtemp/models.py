@@ -1,7 +1,8 @@
 from django.db import models
 from datetime import datetime
 from datetime import time
-from smtconfigs.models import GeneralConfig
+from smtconfigs.models import GeneralConfig, ReducedRate
+
 import sys
 
 
@@ -76,30 +77,30 @@ class Statistics(models.Model):
     def compute_control(self):
         ''' Compute the time to set power on and power off'''
         gc = GeneralConfig.objects.last()
-        #time_power = time.strftime('%H:%M:%S', gmtime(gc.time_power_on_lr))
-        #time_power = datetime.strftime('%H:%M:%S', (second=gc.time_power_on_lr))
-        #dt_str = datetime.datetime.strftime(time_power, '%H:%M:%S')
-
-        time_power = datetime.strptime('00:00:'+ str(gc.time_power_on_lr), '%H:%M:%S')
-        time_power = time(hour=0, minute=gc.time_power_on_lr, second=0  )
-
+        rr = ReducedRate.objects.filter(disable=0).last()
+        if rr.hour_ini < self.hour_minute < rr.hour_end:
+            day_rate = 'low'
+        else:
+            day_rate = 'high'
+        time_power_on = gc.time_power_on_lr if day_rate =='low' else gc.time_power_on_hr
+        time_power = time(hour=int(time_power_on/3600), minute=int((time_power_on%3600)/60), second=int((time_power_on%3600)%60))
+        temp_trigger = gc.temp_trigger_lr if day_rate == 'low' else gc.temp_trigger_hr
 
         if time_power > time(hour=0, minute=0, second=0  ):
-            if self.t_average > gc.temp_trigger_hr:
+            if self.t_average > temp_trigger:
                 self.t_control = 1
-
-                print( self.hour_minute, time_power)
-
+                self.save()
+                diff_seconds = self.hour_minute.hour *3600 + self.hour_minute.minute*60 + self.hour_minute.second - time_power_on
+                hm_range_ini = time(hour=int(diff_seconds/3600), minute=int((diff_seconds%3600)/60), second=int((diff_seconds%3600)%60))
                 queryset = \
-                    Statistics.objects.filter(n_day=self.n_day,
-                                              hour_minute__range=[ self.hour_minute,
-                                                                   (self.hour_minute - time_power)])
-                # set control on, on all registers in the range
+                    Statistics.objects.filter(n_day=self.n_day, hour_minute__range=[hm_range_ini, self.hour_minute])
+                # set control on, on all registers in the range before configured as time_power_on
                 # before the first detection occurred
                 if len(queryset) > 0 or True:
                     for field in queryset:
                         try:
                             field.t_control = 1
+                            field.save()
                         except:
                             print("Unexpected error:", sys.exc_info()[0])
                             raise

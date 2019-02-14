@@ -30,10 +30,10 @@ class GeneralConfig(models.Model):
     '''
     parameters
     datafile: file to read the temperature
-    temp_trigger_lr: low rate temperature trigger
-    temp_trigger_hr: high rate temperature trigger
-    time_power_on_lr: time powered on the water term in low rate
-    time_power_on_hr: time powered on the water term in high rate
+    temp_trigger_lr: low rate temperature trigger (ºC, but depends on used device)
+    temp_trigger_hr: high rate temperature trigger (ºC, but depends on used device)
+    time_power_on_lr: time powered on the water term in low rate (seconds)
+    time_power_on_hr: time powered on the water term in high rate (seconds)
     '''
     # ,default='/sys/bus/w1/devices/28-000006961afe/w1_slave'
     datafile = models.CharField(max_length=200)
