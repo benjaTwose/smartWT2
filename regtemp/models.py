@@ -2,6 +2,8 @@ from django.db import models
 from datetime import datetime
 from datetime import time
 from smtconfigs.models import GeneralConfig, ReducedRate
+from django.utils import timezone
+import pytz
 
 import sys
 
@@ -47,7 +49,7 @@ class Register(models.Model):
             :param regdata: values for  INSERT  statement
         """
         try:
-            self.date_reg = datetime.now()
+            self.date_reg = datetime.now(tz=pytz.timezone('Europe/Berlin'))
             self.raw_temp = self.get_temp_sens(str(GeneralConfig.objects.get(id=1).datafile))
             self.save()
             return self.raw_temp
@@ -88,7 +90,7 @@ class Statistics(models.Model):
 
         if time_power > time(hour=0, minute=0, second=0  ):
             if self.t_average > temp_trigger:
-                self.t_control = 1
+                self.t_control = 0
                 self.save()
                 diff_seconds = self.hour_minute.hour *3600 + self.hour_minute.minute*60 + self.hour_minute.second - time_power_on
                 hm_range_ini = time(hour=int(diff_seconds/3600), minute=int((diff_seconds%3600)/60), second=int((diff_seconds%3600)%60))
@@ -150,8 +152,14 @@ def compute_statistics():
                         except:
                             print("Unexpected error:", sys.exc_info()[0])
                             raise
-                    s = Statistics()
-                    Statistics.savedata(s, i_day, i_hour, i_minute, calc_t_average, cnt)
+
+                    # Update values if exists
+                    try:
+                        sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute))
+                        sobj.savedata(i_day, i_hour, i_minute, calc_t_average, cnt)
+                    except Statistics.DoesNotExist:
+                        sobj = Statistics()
+                        Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average, cnt)
 
             if len(queryset) > 0:
                 print(i_day, i_hour, i_minute, calc_t_average, cnt, len(queryset))
