@@ -1,3 +1,5 @@
 from django.contrib import admin
+from controlwt.models import ControlPower
 
-# Register your models here.
+
+admin.site.register(ControlPower)

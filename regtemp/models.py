@@ -23,6 +23,12 @@ class Register(models.Model):
     date_reg = models.DateTimeField()
     raw_temp = models.IntegerField()
 
+    def __str__(self):
+        return (str(self.id)
+                + "-" + str(self.date_reg)
+                + "-" + str(self.raw_temp)
+                )
+
     def get_temp_sens(self, datafilepath):
         """ get temp sens, get temperature data from senor
         :param datafilepath: path to file of sensor data
@@ -64,6 +70,14 @@ class Statistics(models.Model):
     t_average = models.IntegerField()
     t_count = models.IntegerField()
     t_control = models.BooleanField(default=False)
+
+    def __str__(self):
+        return (str(self.n_day)
+                + "-" + str(self.hour_minute)
+                + "-" + str(self.t_average)
+                + "-" + str(self.t_count)
+                + "-" + str(self.t_control)
+                )
 
     def savedata(self, v_day, v_hour, v_minute, v_average, v_cnt):
         self.n_day = v_day
@@ -153,11 +167,12 @@ def compute_statistics():
                             print("Unexpected error:", sys.exc_info()[0])
                             raise
 
-                    # Update values if exists
                     try:
+                        # Update values if exists
                         sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute))
-                        sobj.savedata(i_day, i_hour, i_minute, calc_t_average, cnt)
+                        sobj.savedata(i_day, i_hour, i_minute, ((calc_t_average + sobj.t_averave)/2), (cnt + sobj.t_count))
                     except Statistics.DoesNotExist:
+                        # Create object values if not exists
                         sobj = Statistics()
                         Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average, cnt)
 

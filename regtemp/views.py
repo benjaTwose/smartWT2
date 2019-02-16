@@ -8,7 +8,7 @@ from django.shortcuts import render
 from datetime import datetime
 from django.http import HttpResponse
 from regtemp.models import Register
-
+from regtemp.models import compute_statistics
 
 def register_temp(request):
     """ This view is a call to register temp.
@@ -32,4 +32,11 @@ def view_register_data(request):
             {% endfor %}
            
            </body></html>"""
+    return HttpResponse(html)
+
+
+def view_compute(request):
+    is_now = datetime.now()
+    compute_statistics()
+    html = "<html><body>Launch compute %s.<body></html>" % (is_now)
     return HttpResponse(html)
