@@ -19,6 +19,8 @@ from django.conf.urls import url
 
 from regtemp import views as regtemp_view
 from controlwt import views as control_vienw
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -30,4 +32,4 @@ urlpatterns = [
     url(r'turnOff', control_vienw.turn_off, name='turn_off'),
     path('compute/', regtemp_view.view_compute, name='Compute'),
 
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
