@@ -127,21 +127,24 @@ class Statistics(models.Model):
             print("Configuration is not set. Can't calculate control trigger")
 
 
-def compute_statistics():
+def compute_statistics(nday):
     """
     calculate the statistics from register.
     In first thought it will calculate the media value of every minute, separated in days of week
     over value configured, it controls on/of the warming of water.
     Then, only 30 days where calculated. The registers of raw data will be erased or transferred to another external db
+    :parameters nday: day to make calc [1..8] - 1..7 is day week, 8 calculate all days
     :return:
     """
-    t_days = range(1, 8)
+    if nday == 8:
+        t_days = range(1, 8)
+    elif 1>= nday <=7:
+        t_days = range(nday, (nday+1)
     t_hours = range(0, 24)
     t_minutes = range(0, 60)
     print("ini ", datetime.now())
     for i_day in t_days:
         for i_hour in t_hours:
-
             for i_minute in t_minutes:
 
                 queryset = Register.objects.filter(date_reg__week_day=i_day,
