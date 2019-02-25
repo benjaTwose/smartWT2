@@ -30,6 +30,6 @@ urlpatterns = [
     path('datareg/', regtemp_view.view_register_data, name='datareg'),
     url(r'turnOn', control_vienw.turn_on, name='turn_on'),
     url(r'turnOff', control_vienw.turn_off, name='turn_off'),
-    path('compute/', regtemp_view.view_compute, name='Compute'),
+    path('compute/<int:n_day>', regtemp_view.view_compute, name='Compute'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

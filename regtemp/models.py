@@ -136,13 +136,18 @@ def compute_statistics(nday):
     :parameters nday: day to make calc [1..8] - 1..7 is day week, 8 calculate all days
     :return:
     """
+
     if nday == 8:
+        #calculate all week
         t_days = range(1, 8)
-    elif 1>= nday <=7:
-        t_days = range(nday, (nday+1)
+    elif nday in range(1, 8):
+        # calculate only one day
+        t_days = range(nday, (nday+1))
+    else:
+        t_days = 0
     t_hours = range(0, 24)
     t_minutes = range(0, 60)
-    print("ini ", datetime.now())
+    print("ini ", datetime.now(), 'nday -> ', nday, 'range ', t_days)
     for i_day in t_days:
         for i_hour in t_hours:
             for i_minute in t_minutes:

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#from __future__ import unicode_literals
+import multiprocessing
 
 from django.shortcuts import render
 
@@ -35,8 +35,21 @@ def view_register_data(request):
     return HttpResponse(html)
 
 
-def view_compute(request):
-    is_now = datetime.now()
-    compute_statistics()
-    html = "<html><body>Launch compute %s.<body></html>" % (is_now)
+def view_compute(request, n_day):
+    if request.method == 'GET':
+        if n_day in range(1, 9):
+
+                is_now = datetime.now()
+                # compute_statistics(n_day)
+                tst = multiprocessing.Process(target=compute_statistics, args=(n_day,))
+                tst.start()
+
+
+                html = "<html><body>Launch compute day: %s, launch time: %s.<body></html>" % (n_day, is_now)
+        else:
+            html = "<html><body>bad request -> %s <body></html>" % (n_day)
+    else:
+        html = "<html><body>bad request<body></html>"
+
+
     return HttpResponse(html)
