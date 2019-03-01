@@ -78,21 +78,35 @@ def control_on_of():
     but less time in high rate (for ex, 5 minutes on, 2 minutes off)
 
     Statistics: adds alternative conditions out of settings in ControlPower
-
+    TO DO:  Call this function every ??  test needle
     """
+    v_now = datetime.now().time()
     v_today = datetime.now().weekday()
-    queryset = ControlPower.objects.filter(n_day__in = [8,v_today])
-    power_out= RPiGpio_Status()
+    queryset = ControlPower.objects.filter(n_day__in = [8, v_today],
+                                           hour_minute_on__lt = v_now,
+                                           hour_minute_off__gt = v_now)
+    queryset_st = Statistics.objects.filter(n_day = v_today, hour_minute = datetime.time(v_now.hour, v_now.minute))
+    power_out = RPiGpio_Status()
     control_status = 0
     for field in queryset:
         try:
             if field.hour_minute_on <= datetime.now().time() <= field.hour_minute_off:
                 control_status = 1
-        except:
-            print("Unexpected error:", sys.exc_info()[0])
+        except RuntimeError:
+            print("Error in hour_minute_on/off")
             raise
+    for field_st in queryset_st:
+        try:
+            if datetime.now().time().hour == field_st.hour_minute.hour \
+                    and datetime.now().time().minute == field_st.hour_minute.minute \
+                    and field_st.t_control == 1:
+                control_status = 1
+        except RuntimeError:
+            print("Error in hour_minute_on/off")
+            raise
+
     try:
-        if control_status ==1:
+        if control_status == 1:
             power_out.out_1_status.turn_on()
         else:
             power_out.out_1_status.turn_of()
