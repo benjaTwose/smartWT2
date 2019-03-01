@@ -2,6 +2,54 @@ from django.db import models
 from datetime import datetime
 from smtconfigs.models import GeneralConfig
 from regtemp.models import Statistics
+from django.http import HttpResponse
+try:
+    import RPi.GPIO as GPIO
+except RuntimeError:
+    print("This library don't work on this platform > " + str(RuntimeError))
+
+
+
+
+class RPiGpio_Status(models.Model):
+    """ config and status for RPi.GPIO
+    LED_PIN = 7
+
+    """
+    LED_PIN = 7
+
+    out_1_pin = models.IntegerField()
+    out_1_status = models.BooleanField()
+
+    def turn_on(self):
+        try:
+
+            GPIO.setmode(GPIO.BOARD)
+            GPIO.output(LED_PIN, 1)
+            self.out_1_status = 1
+            self.save()
+            return 1
+
+        except RuntimeError:
+            return -1
+
+    def turn_off(self):
+        try:
+            GPIO.setmode(GPIO.BOARD)
+            GPIO.output(LED_PIN, 0)
+            self.out_1_status = 0
+            self.save()
+            return 0
+
+        except RuntimeError:
+            return -1
+
+    def __str__(self):
+        return ("Out pin is: " + str(self.out_1_pin)
+                + "and staus is: " + str(self.out_1_status)
+                )
+
+
 
 
 class ControlPower(models.Model):
@@ -20,4 +68,41 @@ class ControlPower(models.Model):
                 + "-" + str(self.hour_minute_on)
                 + "-" + str(self.hour_minute_off)
                 )
+
+
+def control_on_of():
+    """ power on / power of
+    Conditions
+    ControlPower: sets the time preference
+    if there is a low/high rate setting, the control power works all time in low rate,
+    but less time in high rate (for ex, 5 minutes on, 2 minutes off)
+
+    Statistics: adds alternative conditions out of settings in ControlPower
+
+    """
+    v_today = datetime.now().weekday()
+    queryset = ControlPower.objects.filter(n_day__in = [8,v_today])
+    power_out= RPiGpio_Status()
+    control_status = 0
+    for field in queryset:
+        try:
+            if field.hour_minute_on <= datetime.now().time() <= field.hour_minute_off:
+                control_status = 1
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+            raise
+    try:
+        if control_status ==1:
+            power_out.out_1_status.turn_on()
+        else:
+            power_out.out_1_status.turn_of()
+
+    except RuntimeError:
+        print("set power status fail:")
+        raise
+
+
+
+
+
 

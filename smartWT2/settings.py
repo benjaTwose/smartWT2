@@ -25,7 +25,8 @@ SECRET_KEY = 'dyu@7dmk3+e&ubf#q6aqr$90tg=18x(8di&5pgxj=1a$!y3w23'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['smartwt2.cat', '127.0.0.1']
+
 
 
 # Application definition

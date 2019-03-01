@@ -92,12 +92,17 @@ class Statistics(models.Model):
 
     def compute_control(self):
         ''' Compute the time to set power on and power off'''
+
         gc = GeneralConfig.objects.last()
+        # TO DO: The reduced rate has filter parameters
+        # disable and data ini data end to apply different reduced rates
         rr = ReducedRate.objects.filter(disable=0).last()
         if rr.hour_ini < self.hour_minute < rr.hour_end:
             day_rate = 'low'
         else:
             day_rate = 'high'
+
+        # set time to power on conditioned by high / low rate
         time_power_on = gc.time_power_on_lr if day_rate =='low' else gc.time_power_on_hr
         time_power = time(hour=int(time_power_on/3600), minute=int((time_power_on%3600)/60), second=int((time_power_on%3600)%60))
         temp_trigger = gc.temp_trigger_lr if day_rate == 'low' else gc.temp_trigger_hr
@@ -110,8 +115,8 @@ class Statistics(models.Model):
                 hm_range_ini = time(hour=int(diff_seconds/3600), minute=int((diff_seconds%3600)/60), second=int((diff_seconds%3600)%60))
                 queryset = \
                     Statistics.objects.filter(n_day=self.n_day, hour_minute__range=[hm_range_ini, self.hour_minute])
-                # set control on, on all registers in the range before configured as time_power_on
-                # before the first detection occurred
+                # set control on, on all registers in the range between
+                # time inspected less the time configured as time_power_on
                 if len(queryset) > 0 or True:
                     for field in queryset:
                         try:

@@ -32,7 +32,5 @@ def turn_off(request):
         return HttpResponse('')
 
 
-def control_on_of(request):
-    queryset = ControlPower.objects.all()
 
 
