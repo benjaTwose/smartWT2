@@ -1,5 +1,6 @@
 # smartWT2
 smart water term Django2 project
+temperature sensor based on http://carlini.es/sensor-de-temperatura-ds18b20-en-la-raspberry-pi/
 
 environment:
 
