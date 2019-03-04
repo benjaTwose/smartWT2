@@ -184,10 +184,12 @@ def compute_statistics(nday):
                         # Update values if exists
                         sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute))
                         sobj.savedata(i_day, i_hour, i_minute, ((calc_t_average + sobj.t_average)/2), (cnt + sobj.t_count))
+                        print('calc average', calc_t_average,  sobj.t_average, cnt, sobj.t_count)
                     except Statistics.DoesNotExist:
                         # Create object values if not exists
                         sobj = Statistics()
                         Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average, cnt)
+                        print('calc average new reg', calc_t_average, cnt )
 
             if len(queryset) > 0:
                 print(i_day, i_hour, i_minute, calc_t_average, cnt, len(queryset))
