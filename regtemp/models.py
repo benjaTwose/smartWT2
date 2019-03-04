@@ -183,7 +183,7 @@ def compute_statistics(nday):
                     try:
                         # Update values if exists
                         sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute))
-                        sobj.savedata(i_day, i_hour, i_minute, ((calc_t_average + sobj.t_averave)/2), (cnt + sobj.t_count))
+                        sobj.savedata(i_day, i_hour, i_minute, ((calc_t_average + sobj.t_average)/2), (cnt + sobj.t_count))
                     except Statistics.DoesNotExist:
                         # Create object values if not exists
                         sobj = Statistics()
