@@ -1,10 +1,9 @@
 from django.db import models
 from datetime import datetime
 from datetime import time
-from smtconfigs.models import GeneralConfig
 from regtemp.models import Statistics
-from django.http import HttpResponse
 import logging
+
 try:
     import RPi.GPIO as GPIO
 except RuntimeError:
@@ -85,7 +84,8 @@ def control_on_off():
     TO DO:  Call this function every ??  test needle
     """
     # debug -----------------------------------------------
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.DEBUG,filename="/var/log/apache2/smartwt2debug.log")
+    logging.debug("init control on off")
     # -----------------------------------------------------
 
     v_now = datetime.now().time()
