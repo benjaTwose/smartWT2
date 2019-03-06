@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from datetime import time
 from smtconfigs.models import GeneralConfig
 from regtemp.models import Statistics
 from django.http import HttpResponse
