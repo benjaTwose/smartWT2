@@ -9,13 +9,14 @@ except RuntimeError:
     print("This library don't work on this platform > " + str(RuntimeError))
 
 # Create your models here.
-LED_PIN = 13
+GPIOPIN = 13
 
 
 def turn_on(request):
     try:
         GPIO.setmode(GPIO.BOARD)
-        GPIO.output(LED_PIN, 1)
+        GPIO.setup(GPIOPIN, GPIO.OUT)
+        GPIO.output(GPIOPIN, 1)
         return HttpResponse("<html><body>turn on </body></html>")
 
     except RuntimeError as e:
@@ -26,7 +27,8 @@ def turn_on(request):
 def turn_off(request):
     try:
         GPIO.setmode(GPIO.BOARD)
-        GPIO.output(LED_PIN, 0)
+        GPIO.setup(GPIOPIN, GPIO.OUT)
+        GPIO.output(GPIOPIN, 0)
         return HttpResponse("<html><body>turn on </body></html>")
 
     except RuntimeError as e:
