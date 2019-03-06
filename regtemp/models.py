@@ -144,7 +144,7 @@ def compute_statistics(nday):
     :parameters nday: day to make calc [1..8] - 1..7 is day week, 8 calculate all days
     :return:
     """
-    logging.basicConfig(filename="smartwt2.log", level=logging.DEBUG)
+    logging.basicConfig(level=logging.DEBUG)
     if nday == 8:
         #calculate all week
         t_days = range(1, 8)
