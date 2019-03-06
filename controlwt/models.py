@@ -108,9 +108,9 @@ def control_on_off():
 
     try:
         if control_status == 1:
-            power_out.out_1_status.turn_on()
+            power_out.turn_on()
         else:
-            power_out.out_1_status.turn_off()
+            power_out.turn_off()
 
     except RuntimeError:
         print("set power status fail:")
