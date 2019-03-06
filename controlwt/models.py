@@ -82,10 +82,10 @@ def control_on_off():
     """
     v_now = datetime.now().time()
     v_today = datetime.now().weekday()
-    queryset = ControlPower.objects.filter(n_day__in = [8, v_today],
-                                           hour_minute_on__lt = v_now,
-                                           hour_minute_off__gt = v_now)
-    queryset_st = Statistics.objects.filter(n_day = v_today, hour_minute = datetime.time(v_now.hour, v_now.minute))
+    queryset = ControlPower.objects.filter(n_day__in=[8, v_today],
+                                           hour_minute_on__lt=v_now,
+                                           hour_minute_off__gt=v_now)
+    queryset_st = Statistics.objects.filter(n_day=v_today, hour_minute=time(hour=v_now.hour, minute=v_now.minute))
     power_out = RPiGpio_Status()
     control_status = 0
     for field in queryset:
