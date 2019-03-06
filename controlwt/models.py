@@ -9,7 +9,7 @@ try:
 except RuntimeError:
     print("This library don't work on this platform > " + str(RuntimeError))
 
-
+GPIOPIN = 13
 
 
 class RPiGpio_Status(models.Model):
@@ -17,7 +17,7 @@ class RPiGpio_Status(models.Model):
     LED_PIN = 11 (GPIO 17)
 
     """
-    LED_PIN = 13
+
 
     out_1_pin = models.IntegerField()
     out_1_status = models.BooleanField()
@@ -26,7 +26,7 @@ class RPiGpio_Status(models.Model):
         try:
 
             GPIO.setmode(GPIO.BOARD)
-            GPIO.output(LED_PIN, 1)
+            GPIO.output(GPIOPIN, 1)
             self.out_1_status = 1
             self.save()
             return 1
@@ -37,7 +37,7 @@ class RPiGpio_Status(models.Model):
     def turn_off(self):
         try:
             GPIO.setmode(GPIO.BOARD)
-            GPIO.output(LED_PIN, 0)
+            GPIO.output(GPIOPIN, 0)
             self.out_1_status = 0
             self.save()
             return 0
