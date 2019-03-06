@@ -4,6 +4,7 @@ from datetime import time
 from smtconfigs.models import GeneralConfig
 from regtemp.models import Statistics
 from django.http import HttpResponse
+import logging
 try:
     import RPi.GPIO as GPIO
 except RuntimeError:
@@ -83,6 +84,10 @@ def control_on_off():
     Statistics: adds alternative conditions out of settings in ControlPower
     TO DO:  Call this function every ??  test needle
     """
+    # debug -----------------------------------------------
+    logging.basicConfig(level=logging.DEBUG)
+    # -----------------------------------------------------
+
     v_now = datetime.now().time()
     v_today = datetime.now().weekday()
     queryset = ControlPower.objects.filter(n_day__in=[8, v_today],
@@ -93,6 +98,8 @@ def control_on_off():
     control_status = 0
     for field in queryset:
         try:
+            logging.debug("control_on_off " + str(field.hour_minute_on) + ' <= ' + str(datetime.now().time()) +
+                          ' <= ' + str(field.hour_minute_off))
             if field.hour_minute_on <= datetime.now().time() <= field.hour_minute_off:
                 control_status = 1
         except RuntimeError:
@@ -103,6 +110,7 @@ def control_on_off():
             if datetime.now().time().hour == field_st.hour_minute.hour \
                     and datetime.now().time().minute == field_st.hour_minute.minute \
                     and field_st.t_control == 1:
+                logging.debug("control_on_off  -> statistics set -> control_status = 1")
                 control_status = 1
         except RuntimeError:
             print("Error in hour_minute_on/off")
