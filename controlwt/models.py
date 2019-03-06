@@ -84,7 +84,7 @@ def control_on_off():
     TO DO:  Call this function every ??  test needle
     """
     # debug -----------------------------------------------
-    logging.basicConfig(level=logging.DEBUG,filename="/var/log/apache2/smartwt2debug.log")
+    logging.basicConfig(level=logging.DEBUG)
     logging.debug("init control on off")
     # -----------------------------------------------------
 
@@ -94,6 +94,7 @@ def control_on_off():
                                            hour_minute_on__lt=v_now,
                                            hour_minute_off__gt=v_now)
     queryset_st = Statistics.objects.filter(n_day=v_today, hour_minute=time(hour=v_now.hour, minute=v_now.minute))
+
     power_out = RPiGpio_Status()
     control_status = 0
     for field in queryset:
