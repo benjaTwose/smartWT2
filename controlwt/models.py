@@ -16,7 +16,7 @@ class RPiGpio_Status(models.Model):
     LED_PIN = 11 (GPIO 17)
 
     """
-    LED_PIN = 11
+    LED_PIN = 13
 
     out_1_pin = models.IntegerField()
     out_1_status = models.BooleanField()
