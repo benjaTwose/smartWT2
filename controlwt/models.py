@@ -26,6 +26,7 @@ class RPiGpio_Status(models.Model):
         try:
 
             GPIO.setmode(GPIO.BOARD)
+            GPIO.setup(GPIOPIN, GPIO.OUT)
             GPIO.output(GPIOPIN, 1)
             self.out_1_pin = GPIOPIN
             self.out_1_status = 1
@@ -40,6 +41,7 @@ class RPiGpio_Status(models.Model):
     def turn_off(self):
         try:
             GPIO.setmode(GPIO.BOARD)
+            GPIO.setup(GPIOPIN, GPIO.OUT)
             GPIO.output(GPIOPIN, 0)
             self.out_1_pin = GPIOPIN
             self.out_1_status = 0
