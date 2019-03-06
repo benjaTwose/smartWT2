@@ -33,7 +33,8 @@ class RPiGpio_Status(models.Model):
             self.save()
             return 1
 
-        except RuntimeError:
+        except RuntimeError as e:
+            logging.error("Error in turn on: " + str(e))
             return -1
 
     def turn_off(self):
@@ -45,7 +46,8 @@ class RPiGpio_Status(models.Model):
             self.save()
             return 0
 
-        except RuntimeError:
+        except RuntimeError as e:
+            logging.error("Error in turn on: " + str(e))
             return -1
 
     def __str__(self):
