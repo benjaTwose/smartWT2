@@ -103,7 +103,7 @@ def control_on_off():
             if field.hour_minute_on <= datetime.now().time() <= field.hour_minute_off:
                 control_status = 1
         except RuntimeError:
-            print("Error in hour_minute_on/off")
+            logging.error("Error in hour_minute_on/off")
             raise
     for field_st in queryset_st:
         try:
@@ -113,7 +113,7 @@ def control_on_off():
                 logging.debug("control_on_off  -> statistics set -> control_status = 1")
                 control_status = 1
         except RuntimeError:
-            print("Error in hour_minute_on/off")
+            logging.error("Error in hour_minute_on/off")
             raise
 
     try:
@@ -123,7 +123,7 @@ def control_on_off():
             power_out.turn_off()
 
     except RuntimeError:
-        print("set power status fail:")
+        logging.error("set power status fail:")
         raise
 
 
