@@ -18,8 +18,9 @@ def turn_on(request):
         GPIO.output(LED_PIN, 1)
         return HttpResponse("<html><body>turn on </body></html>")
 
-    except RuntimeError:
-        return HttpResponse("<html><body>error turn on </body></html>")
+    except RuntimeError as e:
+        html = "<html><body>error turn on ERROR: %s</body></html>" % (e)
+        return HttpResponse(html)
 
 
 def turn_off(request):
@@ -28,8 +29,9 @@ def turn_off(request):
         GPIO.output(LED_PIN, 0)
         return HttpResponse("<html><body>turn on </body></html>")
 
-    except RuntimeError:
-        return HttpResponse("<html><body>error turn off</body></html>")
+    except RuntimeError as e:
+        html = "<html><body>error turn off ERROR: %s</body></html>" % (e)
+        return HttpResponse(html)
 
 
 
