@@ -13,10 +13,10 @@ except RuntimeError:
 
 class RPiGpio_Status(models.Model):
     """ config and status for RPi.GPIO
-    LED_PIN = 7
+    LED_PIN = 11 (GPIO 17)
 
     """
-    LED_PIN = 7
+    LED_PIN = 11
 
     out_1_pin = models.IntegerField()
     out_1_status = models.BooleanField()

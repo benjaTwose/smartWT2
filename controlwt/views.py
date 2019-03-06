@@ -9,7 +9,7 @@ except RuntimeError:
     print("This library don't work on this platform > " + str(RuntimeError))
 
 # Create your models here.
-LED_PIN = 7
+LED_PIN = 11
 
 
 def turn_on(request):

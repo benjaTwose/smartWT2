@@ -40,10 +40,10 @@ def view_compute(request, n_day):
         if n_day in range(1, 9):
 
                 is_now = datetime.now()
-                # compute_statistics(n_day)
                 tst = multiprocessing.Process(target=compute_statistics, args=(n_day,))
                 tst.start()
-
+                #degugg
+                #compute_statistics(n_day)
 
                 html = "<html><body>Launch compute day: %s, launch time: %s.<body></html>" % (n_day, is_now)
         else:
