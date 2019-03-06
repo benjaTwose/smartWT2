@@ -29,6 +29,7 @@ class RPiGpio_Status(models.Model):
             GPIO.output(GPIOPIN, 1)
             self.out_1_pin = GPIOPIN
             self.out_1_status = 1
+            logging.debug("turn on pin/status" + str(GPIOPIN) + ' / ' + str(self.out_1_status))
             self.save()
             return 1
 
