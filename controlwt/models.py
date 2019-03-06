@@ -70,7 +70,7 @@ class ControlPower(models.Model):
                 )
 
 
-def control_on_of():
+def control_on_off():
     """ power on / power of
     Conditions
     ControlPower: sets the time preference

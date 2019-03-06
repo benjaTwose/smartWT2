@@ -18,7 +18,7 @@ from django.urls import path
 from django.conf.urls import url
 
 from regtemp import views as regtemp_view
-from controlwt import views as control_vienw
+from controlwt import views as control_view
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -28,8 +28,9 @@ urlpatterns = [
     # This path is for create a new temperature register data
     path('regtemp/', regtemp_view.register_temp, name='regtemp'),
     path('datareg/', regtemp_view.view_register_data, name='datareg'),
-    url(r'turnOn', control_vienw.turn_on, name='turn_on'),
-    url(r'turnOff', control_vienw.turn_off, name='turn_off'),
+    url(r'turnOn', control_view.turn_on, name='turn_on'),
+    url(r'turnOff', control_view.turn_off, name='turn_off'),
     path('compute/<int:n_day>', regtemp_view.view_compute, name='Compute'),
+    path('apionoff', control_view.api_on_off(), name='SetPower'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
