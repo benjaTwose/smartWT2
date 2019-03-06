@@ -38,7 +38,12 @@ def turn_off(request):
         return HttpResponse(html)
 
 
-def api_on_off():
+def api_on_off(request):
     """ view used as api call to set on/off power
     it can be called every 5 minutes for example """
-    control_on_off()
+    try:
+        control_on_off()
+        return HttpResponse("<html><body>ok - call power on/off </body></html>")
+    except RuntimeError as e:
+        html = "<html><body>error launch auto control power: %s</body></html>" % (e)
+        return HttpResponse(html)
