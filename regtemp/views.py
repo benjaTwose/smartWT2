@@ -36,6 +36,7 @@ def view_register_data(request):
 
 
 def view_compute(request, n_day):
+    """ nday in isoweek format 1:Monday ..."""
     if request.method == 'GET':
         if n_day in range(1, 9):
 

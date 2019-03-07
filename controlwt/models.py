@@ -21,6 +21,7 @@ class RPiGpio_Status(models.Model):
 
     out_1_pin = models.IntegerField()
     out_1_status = models.BooleanField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def turn_on(self):
         try:
@@ -30,7 +31,7 @@ class RPiGpio_Status(models.Model):
             GPIO.output(GPIOPIN, 1)
             self.out_1_pin = GPIOPIN
             self.out_1_status = 1
-            logging.debug("turn on pin/status" + str(GPIOPIN) + ' / ' + str(self.out_1_status))
+            logging.debug("turn on pin/status " + str(GPIOPIN) + '/' + str(self.out_1_status))
             self.save()
             return 1
 
@@ -94,7 +95,7 @@ def control_on_off():
     # -----------------------------------------------------
 
     v_now = datetime.now().time()
-    v_today = datetime.now().weekday()
+    v_today = datetime.now().isoweekday()
     queryset = ControlPower.objects.filter(n_day__in=[8, v_today],
                                            hour_minute_on__lt=v_now,
                                            hour_minute_off__gt=v_now)
@@ -114,7 +115,7 @@ def control_on_off():
     for field_st in queryset_st:
         try:
             if datetime.now().time().hour == field_st.hour_minute.hour \
-                    and datetime.now().time().minute == field_st.hour_minute.minute \
+                    and  datetime.now().time().minute == field_st.hour_minute.minute \
                     and field_st.t_control == 1:
                 logging.debug("control_on_off  -> statistics set -> control_status = 1")
                 control_status = 1

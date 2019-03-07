@@ -194,7 +194,7 @@ def compute_statistics(nday):
                         sobj = Statistics()
                         Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average, cnt)
                         logging.debug('calc average new reg'  +str(calc_t_average) + ' ' + str(cnt) )
-                         #print('calc average new reg', calc_t_average, cnt )
+                        #print('calc average new reg', calc_t_average, cnt )
 
             if len(queryset) > 0:
                 print(i_day, i_hour, i_minute, calc_t_average, cnt, len(queryset))
