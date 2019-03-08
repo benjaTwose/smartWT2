@@ -8,9 +8,6 @@ import logging
 import sys
 
 
-
-
-
 class RegisterBkp(models.Model):
     """ temperature register in raw data
     date_reg: data - time temperature read
@@ -194,14 +191,14 @@ def compute_statistics(nday):
                         sobj.savedata(i_day, i_hour, i_minute, ((calc_t_average + sobj.t_average)/2), (cnt + sobj.t_count))
                         logging.debug('calc average '
                                       + str(calc_t_average)
-                                      + ' ' + str(sobj.t_average)
-                                      + ' ' + str(cnt)
-                                      + ' ' + str(sobj.t_count))
+                                      + 'objav ' + str(sobj.t_average)
+                                      + 'cnt ' + str(cnt)
+                                      + 'objcnt ' + str(sobj.t_count))
                     except Statistics.DoesNotExist:
                         # Create object values if not exists
                         sobj = Statistics()
                         Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average, cnt)
-                        logging.debug('calc average new reg ' + str(calc_t_average) + ' ' + str(cnt) )
+                        logging.debug('calc average new reg ' + str(calc_t_average) + 'cnt ' + str(cnt) )
                         #print('calc average new reg', calc_t_average, cnt )
 
             if len(queryset) > 0:
