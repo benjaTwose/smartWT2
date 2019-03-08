@@ -12,6 +12,7 @@ class RegisterBkp(models.Model):
     """ temperature register in raw data
     date_reg: data - time temperature read
     raw_temp: temperature in Cº x 1000 """
+    date_reg_day = models.IntegerField(default=None, blank=True)
     date_reg = models.DateTimeField()
     raw_temp = models.IntegerField()
 
@@ -20,6 +21,7 @@ class Register(models.Model):
     """ temperature register in raw data
     date_reg: data - time temperature read
     raw_temp: temperature in Cº x 1000 """
+    date_reg_day = models.IntegerField(default=None, blank=True)
     date_reg = models.DateTimeField()
     raw_temp = models.IntegerField()
 
@@ -57,6 +59,7 @@ class Register(models.Model):
         try:
             self.date_reg = datetime.now(tz=pytz.timezone('Europe/Berlin'))
             self.raw_temp = self.get_temp_sens(str(GeneralConfig.objects.get(id=1).datafile))
+            self.date_reg_day = self.date_reg.isoweekday()
             self.save()
             return self.raw_temp
         except IOError as e:
@@ -150,59 +153,62 @@ def compute_statistics(nday):
         t_days = range(nday, (nday+1))
     else:
         t_days = 0
-    t_hours = range(0, 24)
-    t_minutes = range(0, 60)
-    #print("ini ", datetime.now(), 'nday -> ', nday, 'range ', t_days)
-    logging.debug("statistics ini " + str(datetime.now()) + 'nday -> ' + str(nday) + 'range ' + str(t_days))
-    for i_day in t_days:
-        for i_hour in t_hours:
-            for i_minute in t_minutes:
 
-                queryset = Register.objects.filter(date_reg__isoweek_day=i_day,
-                                                   date_reg__time__hour=i_hour, date_reg__time__minute=i_minute)
-                logging.debug('calc average h:m ' + str(i_hour)
-                              + ':' + str(i_minute)
-                              + 'day ' + str(i_day)
-                              + 'numreg ' + str(len(queryset)))
-                cnt = 0
-                calc_t_average = 0
-                if len(queryset) > 0:
-                    for field in queryset:
+    queryset = Register.objects.filter(date_reg__week_day=i_day)
+    if len(queryset) > 0:
+        t_hours = range(0, 24)
+        t_minutes = range(0, 60)
+        #print("ini ", datetime.now(), 'nday -> ', nday, 'range ', t_days)
+        logging.debug("statistics ini " + str(datetime.now()) + 'nday -> ' + str(nday) + 'range ' + str(t_days))
+        for i_day in t_days:
+            for i_hour in t_hours:
+                for i_minute in t_minutes:
+
+                    queryset = Register.objects.filter(date_reg__isoweek_day=i_day,
+                                                       date_reg__time__hour=i_hour, date_reg__time__minute=i_minute)
+                    logging.debug('calc average h:m ' + str(i_hour)
+                                  + ':' + str(i_minute)
+                                  + 'day ' + str(i_day)
+                                  + 'numreg ' + str(len(queryset)))
+                    cnt = 0
+                    calc_t_average = 0
+                    if len(queryset) > 0:
+                        for field in queryset:
+                            try:
+                                calc_t_average = int(field.raw_temp) + int(calc_t_average)
+                                cnt += 1
+                                logging.debug('calc average ' + str((calc_t_average)))
+                                # bkp registers and delete raw data
+                                rbkp = RegisterBkp()
+                                rbkp.date_reg = field.date_reg
+                                rbkp.raw_temp = field.raw_temp
+                                rbkp.save()
+                                field.delete()
+
+                            except TypeError as e:
+                                print(field.raw_temp, e.__cause__)
+                            except:
+                                print("Unexpected error:", sys.exc_info()[0])
+                                raise
+
                         try:
-                            calc_t_average = int(field.raw_temp) + int(calc_t_average)
-                            cnt += 1
-                            logging.debug('calc average ' + str((calc_t_average)))
-                            # bkp registers and delete raw data
-                            rbkp = RegisterBkp()
-                            rbkp.date_reg = field.date_reg
-                            rbkp.raw_temp = field.raw_temp
-                            rbkp.save()
-                            field.delete()
+                            # Update values if exists
+                            sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute))
+                            sobj.savedata(i_day, i_hour, i_minute, ((calc_t_average + sobj.t_average)/2), (cnt + sobj.t_count))
+                            logging.debug('calc average '
+                                          + str(calc_t_average)
+                                          + 'objav ' + str(sobj.t_average)
+                                          + 'cnt ' + str(cnt)
+                                          + 'objcnt ' + str(sobj.t_count))
+                        except Statistics.DoesNotExist:
+                            # Create object values if not exists
+                            sobj = Statistics()
+                            Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average, cnt)
+                            logging.debug('calc average new reg ' + str(calc_t_average) + 'cnt ' + str(cnt) )
+                            #print('calc average new reg', calc_t_average, cnt )
 
-                        except TypeError as e:
-                            print(field.raw_temp, e.__cause__)
-                        except:
-                            print("Unexpected error:", sys.exc_info()[0])
-                            raise
-
-                    try:
-                        # Update values if exists
-                        sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute))
-                        sobj.savedata(i_day, i_hour, i_minute, ((calc_t_average + sobj.t_average)/2), (cnt + sobj.t_count))
-                        logging.debug('calc average '
-                                      + str(calc_t_average)
-                                      + 'objav ' + str(sobj.t_average)
-                                      + 'cnt ' + str(cnt)
-                                      + 'objcnt ' + str(sobj.t_count))
-                    except Statistics.DoesNotExist:
-                        # Create object values if not exists
-                        sobj = Statistics()
-                        Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average, cnt)
-                        logging.debug('calc average new reg ' + str(calc_t_average) + 'cnt ' + str(cnt) )
-                        #print('calc average new reg', calc_t_average, cnt )
-
-            if len(queryset) > 0:
-                print(i_day, i_hour, i_minute, calc_t_average, cnt, len(queryset))
+                if len(queryset) > 0:
+                    print(i_day, i_hour, i_minute, calc_t_average, cnt, len(queryset))
 
     queryset = Statistics.objects.all()
     if len(queryset) > 0:
