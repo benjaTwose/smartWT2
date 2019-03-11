@@ -3,7 +3,10 @@ from datetime import datetime
 from datetime import time
 from smtconfigs.models import GeneralConfig, ReducedRate
 from django.utils import timezone
-import pytz
+from pytz import timezone as tmz
+from django.conf import settings
+from django.utils.timezone import make_aware
+
 import logging
 import sys
 
@@ -57,9 +60,10 @@ class Register(models.Model):
             :param regdata: values for  INSERT  statement
         """
         try:
-            self.date_reg = datetime.now(tz=pytz.timezone('Europe/Berlin'))
-            self.raw_temp = self.get_temp_sens(str(GeneralConfig.objects.get(id=1).datafile))
+            naive_datetime = datetime.now()
+            self.date_reg = make_aware(naive_datetime)
             self.date_reg_day = self.date_reg.isoweekday()
+            self.raw_temp = self.get_temp_sens(str(GeneralConfig.objects.get(id=1).datafile))
             self.save()
             return self.raw_temp
         except IOError as e:
@@ -154,7 +158,7 @@ def compute_statistics(nday):
     else:
         t_days = 0
 
-    queryset = Register.objects.filter(date_reg__week_day=i_day)
+    queryset = Register.objects.filter(date_reg_day=nday)
     if len(queryset) > 0:
         t_hours = range(0, 24)
         t_minutes = range(0, 60)
@@ -164,7 +168,7 @@ def compute_statistics(nday):
             for i_hour in t_hours:
                 for i_minute in t_minutes:
 
-                    queryset = Register.objects.filter(date_reg__isoweek_day=i_day,
+                    queryset = Register.objects.filter(date_reg__week_day=i_day,
                                                        date_reg__time__hour=i_hour, date_reg__time__minute=i_minute)
                     logging.debug('calc average h:m ' + str(i_hour)
                                   + ':' + str(i_minute)
@@ -180,6 +184,7 @@ def compute_statistics(nday):
                                 logging.debug('calc average ' + str((calc_t_average)))
                                 # bkp registers and delete raw data
                                 rbkp = RegisterBkp()
+                                rbkp.date_reg_day = field.date_reg_day
                                 rbkp.date_reg = field.date_reg
                                 rbkp.raw_temp = field.raw_temp
                                 rbkp.save()
