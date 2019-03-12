@@ -59,8 +59,6 @@ class RPiGpio_Status(models.Model):
                 )
 
 
-
-
 class ControlPower(models.Model):
     """ power control
     parameters:
@@ -94,43 +92,60 @@ def control_on_off():
     logging.debug("init control on off")
     # -----------------------------------------------------
 
-    v_now = datetime.now().time()
-    v_today = datetime.now().isoweekday()
+    """
+    Set on/off from default week settings
+    """
+    v_now = datetime.utcnow().time()
+    v_today = datetime.utcnow().isoweekday()
     queryset = ControlPower.objects.filter(n_day__in=[8, v_today],
                                            hour_minute_on__lt=v_now,
                                            hour_minute_off__gt=v_now)
-    queryset_st = Statistics.objects.filter(n_day=v_today, hour_minute=time(hour=v_now.hour, minute=v_now.minute))
-
     power_out = RPiGpio_Status()
     control_status = 0
     for field in queryset:
         try:
-            logging.debug("control_on_off " + str(field.hour_minute_on) + ' <= ' + str(datetime.now().time()) +
+            # TO DO -> time is in utc and hour minute in local time - calculate deltas
+            logging.debug("control_on_off " + str(field.hour_minute_on) + ' <= ' + str(datetime.utcnow().time()) +
                           ' <= ' + str(field.hour_minute_off))
-            if field.hour_minute_on <= datetime.now().time() <= field.hour_minute_off:
-                control_status = 1
-        except RuntimeError:
-            logging.error("Error in hour_minute_on/off")
-            raise
-    for field_st in queryset_st:
-        try:
-            if datetime.now().time().hour == field_st.hour_minute.hour \
-                    and  datetime.now().time().minute == field_st.hour_minute.minute \
-                    and field_st.t_control == 1:
-                logging.debug("control_on_off  -> statistics set -> control_status = 1")
+            if field.hour_minute_on <= datetime.utcnow().time() <= field.hour_minute_off:
                 control_status = 1
         except RuntimeError:
             logging.error("Error in hour_minute_on/off")
             raise
 
+
+    """
+    Set on/off from statistics 
+    """
+    #queryset_st = Statistics.objects.filter(n_day=v_today, hour_minute=time(hour=v_now.hour, minute=v_now.minute))
+    queryset_st = Statistics.objects.filter(n_day=v_today,
+                                            hour_minute__gte=time(hour=v_now.hour, minute=(v_now.minute - 2)),
+                                            hour_minute__lte=time(hour=v_now.hour, minute=(v_now.minute + 2)))
+    """ It's needle to have one register to use statistics"""
+    if len(queryset_st) > 0:
+        for field_st in queryset_st:
+            try:
+                if datetime.utcnow().time().hour == field_st.hour_minute.hour \
+                        and  datetime.utcnow().time().minute == field_st.hour_minute.minute \
+                        and field_st.t_control == 1:
+
+                    if field_st.t_count>1:
+                        """ It's needle to have more than one counter to use statistics"""
+                        logging.debug("control_on_off  -> statistics set -> control_status = 1")
+                        control_status = 1
+            except RuntimeError as e:
+                logging.error("Error in hour_minute_on/off: %s", e)
+                raise
+    else:
+        control_status = 1
     try:
         if control_status == 1:
             power_out.turn_on()
         else:
             power_out.turn_off()
 
-    except RuntimeError:
-        logging.error("set power status fail:")
+    except RuntimeError as e:
+        logging.error("set power status fail, Error: %s", e)
         raise
 
 

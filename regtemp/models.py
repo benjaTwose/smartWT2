@@ -72,8 +72,8 @@ class Register(models.Model):
 
 class Statistics(models.Model):
     """ temperature statistics to resolve control"""
-    n_day = models.IntegerField()
-    hour_minute = models.TimeField()
+    n_day = models.IntegerField()     #in UTC time
+    hour_minute = models.TimeField()  #in UTC time
     t_average = models.IntegerField()
     t_count = models.IntegerField()
     t_control = models.BooleanField(default=False)
@@ -102,7 +102,7 @@ class Statistics(models.Model):
 
         gc = GeneralConfig.objects.last()
         # TO DO: The reduced rate has filter parameters
-        # disable and data ini data end to apply different reduced rates
+        # use the configs: disable, data_ini, data_end, to apply different reduced rates
         rr = ReducedRate.objects.filter(disable=0).last()
         if rr.hour_ini < self.hour_minute < rr.hour_end:
             day_rate = 'low'
@@ -136,7 +136,7 @@ class Statistics(models.Model):
             else:
                 self.t_control = 0
         else:
-            print("Configuration is not set. Can't calculate control trigger")
+            logging.error("Rate configuration is not set. Can't calculate control trigger")
 
 
 def compute_statistics(nday):
