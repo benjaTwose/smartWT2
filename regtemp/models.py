@@ -159,7 +159,7 @@ def compute_statistics(nday):
         t_days = 0
 
     queryset = Register.objects.filter(date_reg_day=nday)
-    if len(queryset) > 0:
+    if len(queryset) > 0 or nday == 8:
         t_hours = range(0, 24)
         t_minutes = range(0, 60)
         #print("ini ", datetime.now(), 'nday -> ', nday, 'range ', t_days)
