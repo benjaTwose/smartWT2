@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 from datetime import time
+from datetime import timedelta
 from regtemp.models import Statistics
 import logging
 
@@ -95,11 +96,13 @@ def control_on_off():
     """
     Set on/off from default week settings
     """
-    v_now = datetime.utcnow().time()
+    v_nowd = datetime.utcnow()
+    v_now = v_nowd.time()
+    v_now_add = (v_nowd + timedelta(minutes=5)).time()
     v_today = datetime.utcnow().isoweekday()
     queryset = ControlPower.objects.filter(n_day__in=[8, v_today],
                                            hour_minute_on__lt=v_now,
-                                           hour_minute_off__gt=v_now)
+                                           hour_minute_off__gt=v_now_add)
     power_out = RPiGpio_Status()
     control_status = 0
     for field in queryset:
@@ -119,8 +122,8 @@ def control_on_off():
     """
     #queryset_st = Statistics.objects.filter(n_day=v_today, hour_minute=time(hour=v_now.hour, minute=v_now.minute))
     queryset_st = Statistics.objects.filter(n_day=v_today,
-                                            hour_minute__gte=time(hour=v_now.hour, minute=(v_now.minute - 2)),
-                                            hour_minute__lte=time(hour=v_now.hour, minute=(v_now.minute + 2)))
+                                            hour_minute__gte=time(hour=v_now.hour, minute=(v_now.minute)),
+                                            hour_minute__lte=time(hour=v_now_add.hour, minute=(v_now_add.minute)))
     """ It's needle to have one register to use statistics"""
     if len(queryset_st) > 0:
         for field_st in queryset_st:
