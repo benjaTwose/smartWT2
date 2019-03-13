@@ -168,7 +168,7 @@ def compute_statistics(nday):
             for i_hour in t_hours:
                 for i_minute in t_minutes:
 
-                    queryset = Register.objects.filter(date_reg__week_day=i_day,
+                    queryset = Register.objects.filter(date_reg_day=i_day,
                                                        date_reg__time__hour=i_hour, date_reg__time__minute=i_minute)
                     logging.debug('calc average h:m ' + str(i_hour)
                                   + ':' + str(i_minute)
