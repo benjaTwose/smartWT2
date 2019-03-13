@@ -60,8 +60,9 @@ class Register(models.Model):
             :param regdata: values for  INSERT  statement
         """
         try:
-            naive_datetime = datetime.now()
-            self.date_reg = make_aware(naive_datetime)
+            #naive_datetime = datetime.now()
+            #self.date_reg = make_aware(naive_datetime)
+            self.date_reg = datetime.utcnow()
             self.date_reg_day = self.date_reg.isoweekday()
             self.raw_temp = self.get_temp_sens(str(GeneralConfig.objects.get(id=1).datafile))
             self.save()
