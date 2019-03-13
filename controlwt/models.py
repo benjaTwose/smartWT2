@@ -56,7 +56,8 @@ class RPiGpio_Status(models.Model):
 
     def __str__(self):
         return ("Out pin is: " + str(self.out_1_pin)
-                + "and staus is: " + str(self.out_1_status)
+                + " and staus is: " + str(self.out_1_status)
+                + " created: " + str(self.created_at)
                 )
 
 

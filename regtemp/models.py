@@ -30,8 +30,9 @@ class Register(models.Model):
 
     def __str__(self):
         return (str(self.id)
-                + "-" + str(self.date_reg)
-                + "-" + str(self.raw_temp)
+                + " iso day: " + str(self.date_reg_day)
+                + " reg date: " + str(self.date_reg)
+                + " raw_temp: " + str(self.raw_temp)
                 )
 
     def get_temp_sens(self, datafilepath):
