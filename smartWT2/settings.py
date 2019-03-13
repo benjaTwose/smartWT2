@@ -77,10 +77,27 @@ WSGI_APPLICATION = 'smartWT2.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'smtcontrol2.sqlite3'),
+#    }
+#}
+
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'smtcontrol2.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'smartwt2',
+        'USER': 'smartwt2',
+        'PASSWORD': 'chartreuse',
+        'HOST': 'localhost',
+        'PORT': '',
+        'OPTIONS': {
+           'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
+
     }
 }
 
