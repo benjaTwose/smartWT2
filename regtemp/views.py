@@ -25,7 +25,7 @@ def register_temp(request):
 
 
 def view_statistics_data(request, n_day):
-    data = Statistics.objects.filter(n_day=n_day)
+    data = Statistics.objects.filter(n_day=n_day).order_by('hour_minute')
     return render(request, template_name='chart_template.html', context={'data': data})
 
 

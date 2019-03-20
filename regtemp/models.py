@@ -94,10 +94,7 @@ class Statistics(models.Model):
     def savedata(self, v_day, v_hour, v_minute, v_average, v_cnt):
         self.n_day = v_day
         self.hour_minute = time(hour=v_hour, minute=v_minute)
-        if v_cnt > 0:
-            self.t_average = v_average / v_cnt
-        else:
-            self.t_average = v_average
+        self.t_average = v_average
         self.t_count = v_cnt
         self.save()
         return 0
@@ -119,7 +116,7 @@ class Statistics(models.Model):
         time_power = time(hour=int(time_power_on/3600), minute=int((time_power_on%3600)/60), second=int((time_power_on%3600)%60))
         temp_trigger = gc.temp_trigger_lr if day_rate == 'low' else gc.temp_trigger_hr
 
-        if time_power > time(hour=0, minute=0, second=0  ):
+        if time_power > time(hour=0, minute=0, second=0):
             if self.t_average > temp_trigger:
                 self.t_control = 0
                 self.save()
@@ -202,7 +199,7 @@ def compute_statistics(nday):
                         try:
                             # Update values if exists
                             sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute))
-                            sobj.savedata(i_day, i_hour, i_minute, ((calc_t_average + sobj.t_average)/2), (cnt + sobj.t_count))
+                            sobj.savedata(i_day, i_hour, i_minute, (calc_t_average + sobj.t_average)/(cnt+sobj.t_count), (cnt+sobj.t_count))
                             logging.debug('Calc average '
                                           + str(calc_t_average)
                                           + ' objav: ' + str(sobj.t_average)
