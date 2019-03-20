@@ -22,17 +22,9 @@ def register_temp(request):
     return HttpResponse(html)
 
 
-def view_register_data(request):
-    calc_data = Register()
-    calc_data.objects.filter(raw_temp='%29%')
-
-    html = """<html><body>
-            {% for calc_data in results %}
-                <li>{{ calc_data|escape }}</l1>
-            {% endfor %}
-           
-           </body></html>"""
-    return HttpResponse(html)
+def view_statistics_data(request):
+    data = Statistics.objects.all(raw_temp='%29%')
+    return render(request, template_name='chart_template.html', context={'data': data})
 
 
 def view_compute(request, n_day):

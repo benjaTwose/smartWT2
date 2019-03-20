@@ -27,10 +27,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # This path is for create a new temperature register data
     path('regtemp/', regtemp_view.register_temp, name='regtemp'),
-    path('datareg/', regtemp_view.view_register_data, name='datareg'),
     url(r'turnOn', control_view.turn_on, name='turn_on'),
     url(r'turnOff', control_view.turn_off, name='turn_off'),
     path('compute/<int:n_day>', regtemp_view.view_compute, name='Compute'),
     url(r'apionoff', control_view.api_on_off, name='SetPower'),
+    path('statistics', regtemp_view.view_statistics_data, name='Statistics'),
 
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

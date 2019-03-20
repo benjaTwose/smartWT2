@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+</head>
+<body>
+
+    <canvas id="funchart" width="75" height="50"></canvas>
+
+<script type="text/javascript">
+     var a = document.getElementById('funchart').getContext('2d');
+     var myLineChart = new Chart(a, {
+               type: 'line',
+               data: {
+                   labels:[{% for i in w %}{{ i.page }},{% endfor %}],
+                   datasets: [{
+                        label:'My Dot',
+                        data: [{% for i in w %}{{ i.words }},{% endfor %}]
+                             }]
+                      },
+               options:{
+                   scales: {
+                       xAxes: [{
+                           display:true
+                              }],
+                       yAxes: [{
+                           ticks: {
+                               beginAtZero:true
+                                   }
+                               }]
+                            }
+                        }
+                      });
+</script>
+
+</body>
+
+
+</html>
