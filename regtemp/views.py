@@ -9,6 +9,8 @@ from datetime import datetime
 from django.http import HttpResponse
 from regtemp.models import Register
 from regtemp.models import compute_statistics
+from regtemp.models import Statistics
+
 
 def register_temp(request):
     """ This view is a call to register temp.
@@ -22,8 +24,8 @@ def register_temp(request):
     return HttpResponse(html)
 
 
-def view_statistics_data(request):
-    data = Statistics.objects.all(raw_temp='%29%')
+def view_statistics_data(request, n_day):
+    data = Statistics.objects.filter(n_day=n_day)
     return render(request, template_name='chart_template.html', context={'data': data})
 
 

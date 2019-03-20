@@ -88,6 +88,9 @@ class Statistics(models.Model):
                 + "-" + str(self.t_control)
                 )
 
+    def hmprint(self):
+        return self.hour_minute("%X")
+
     def savedata(self, v_day, v_hour, v_minute, v_average, v_cnt):
         self.n_day = v_day
         self.hour_minute = time(hour=v_hour, minute=v_minute)
