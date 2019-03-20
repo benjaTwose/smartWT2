@@ -88,6 +88,9 @@ class Statistics(models.Model):
                 + "-" + str(self.t_control)
                 )
 
+    def hmprint(self):
+        return self.hour_minute("%X")
+
     def savedata(self, v_day, v_hour, v_minute, v_average, v_cnt):
         self.n_day = v_day
         self.hour_minute = time(hour=v_hour, minute=v_minute)
@@ -172,10 +175,9 @@ def compute_statistics(nday):
 
                     queryset = Register.objects.filter(date_reg_day=i_day,
                                                        date_reg__time__hour=i_hour, date_reg__time__minute=i_minute)
-                    logging.debug('calc average h:m ' + str(i_hour)
-                                  + ':' + str(i_minute)
-                                  + 'day ' + str(i_day)
-                                  + 'numreg ' + str(len(queryset)))
+                    logging.debug('calc average day: ' + str(i_day)
+                                  + ' - ' + str(time(i_hour, i_minute))
+                                  + ' numreg: ' + str(len(queryset)))
                     cnt = 0
                     calc_t_average = 0
                     if len(queryset) > 0:
@@ -183,7 +185,6 @@ def compute_statistics(nday):
                             try:
                                 calc_t_average = int(field.raw_temp) + int(calc_t_average)
                                 cnt += 1
-                                logging.debug('calc average ' + str((calc_t_average)))
                                 # bkp registers and delete raw data
                                 rbkp = RegisterBkp()
                                 rbkp.date_reg_day = field.date_reg_day
@@ -202,17 +203,16 @@ def compute_statistics(nday):
                             # Update values if exists
                             sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute))
                             sobj.savedata(i_day, i_hour, i_minute, ((calc_t_average + sobj.t_average)/2), (cnt + sobj.t_count))
-                            logging.debug('calc average '
+                            logging.debug('Calc average '
                                           + str(calc_t_average)
-                                          + 'objav ' + str(sobj.t_average)
-                                          + 'cnt ' + str(cnt)
-                                          + 'objcnt ' + str(sobj.t_count))
+                                          + ' objav: ' + str(sobj.t_average)
+                                          + ' cnt: ' + str(cnt)
+                                          + ' objcnt:_' + str(sobj.t_count))
                         except Statistics.DoesNotExist:
                             # Create object values if not exists
                             sobj = Statistics()
                             Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average, cnt)
-                            logging.debug('calc average new reg ' + str(calc_t_average) + 'cnt ' + str(cnt) )
-                            #print('calc average new reg', calc_t_average, cnt )
+                            logging.debug('Calc average new reg t: ' + str(calc_t_average) + ' cnt: ' + str(cnt) )
 
                 if len(queryset) > 0:
                     print(i_day, i_hour, i_minute, calc_t_average, cnt, len(queryset))
