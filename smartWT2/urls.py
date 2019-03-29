@@ -32,4 +32,5 @@ urlpatterns = [
     path('compute/<int:n_day>', regtemp_view.view_compute, name='Compute'),
     url(r'apionoff', control_view.api_on_off, name='SetPower'),
     path('statistics/<int:n_day>', regtemp_view.view_statistics_data, name='Statistics'),
+    path('register/<int:n_day>', regtemp_view.view_register_data, name='Register'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

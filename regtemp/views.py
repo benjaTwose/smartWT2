@@ -26,7 +26,13 @@ def register_temp(request):
 
 def view_statistics_data(request, n_day):
     data = Statistics.objects.filter(n_day=n_day).order_by('hour_minute')
-    return render(request, template_name='chart_template.html', context={'data': data})
+    return render(request, template_name='chart_template_statistics.html', context={'data': data})
+
+
+def view_register_data(request, n_day):
+    data = Register.objects.filter(date_reg_day=n_day).order_by('date_reg')
+    return render(request, template_name='chart_template_register.html', context={'data': data})
+
 
 
 def view_compute(request, n_day):
