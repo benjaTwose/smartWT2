@@ -137,6 +137,7 @@ class Statistics(models.Model):
 
             else:
                 self.t_control = 0
+                self.save()
         else:
             logging.error("Rate configuration is not set. Can't calculate control trigger")
 
@@ -208,7 +209,7 @@ def compute_statistics(nday):
                         except Statistics.DoesNotExist:
                             # Create object values if not exists
                             sobj = Statistics()
-                            Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average, cnt)
+                            Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average/cnt, cnt)
                             logging.debug('Calc average new reg t: ' + str(calc_t_average) + ' cnt: ' + str(cnt) )
 
                 if len(queryset) > 0:
