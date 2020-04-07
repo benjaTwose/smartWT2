@@ -23,6 +23,9 @@ def register_temp(request):
     html = "<html><body>It is now %s. And temperature is %s</body></html>" % (is_now, v_register_temp)
     return HttpResponse(html)
 
+def view_index(request):
+    return render(request, template_name='index_template.html')
+
 
 def view_statistics_data(request, n_day):
     data = Statistics.objects.filter(n_day=n_day).order_by('hour_minute')
