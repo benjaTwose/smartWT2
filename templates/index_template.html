@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <title>W3.CSS Template</title>
@@ -22,7 +23,6 @@ body {font-size:16px;}
   </div>
   <div class="w3-bar-block">
     <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a>
-    <a href="#showcase" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Showcase</a>
     <a href="#services" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Services</a>
     <a href="#designers" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Designers</a>
     <a href="#packages" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Packages</a>
@@ -33,7 +33,7 @@ body {font-size:16px;}
 <!-- Top menu on small screens -->
 <header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
   <a href="javascript:void(0)" class="w3-button w3-red w3-margin-right" onclick="w3_open()">☰</a>
-  <span>Company Name</span>
+  <span>B.T.TECH</span>
 </header>
 
 <!-- Overlay effect when opening sidebar on small screens -->
@@ -45,44 +45,18 @@ body {font-size:16px;}
   <!-- Header -->
   <div class="w3-container" style="margin-top:80px" id="showcase">
     <h1 class="w3-jumbo"><b>Smart temperature sensor</b></h1>
-    <h1 class="w3-xxxlarge w3-text-red"><b>Showcase.</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
   </div>
 
-  <!-- Photo grid (modal) -->
-  <div class="w3-row-padding">
-    <div class="w3-half">
-      <img src="/w3images/kitchenconcrete.jpg" style="width:100%" onclick="onClick(this)" alt="xxxxxx">
-      <img src="/w3images/livingroom.jpg" style="width:100%" onclick="onClick(this)" alt="xxxxxxxxxx">
-      <img src="/w3images/diningroom.jpg" style="width:100%" onclick="onClick(this)" alt="xxxxxxxxxxx">
-    </div>
-
-    <div class="w3-half">
-      <img src="/w3images/atrium.jpg" style="width:100%" onclick="onClick(this)" alt="xxxxxxxxxxxx">
-      <img src="/w3images/bedroom.jpg" style="width:100%" onclick="onClick(this)" alt="xxxxxxxxxxxx">
-      <img src="/w3images/livingroom2.jpg" style="width:100%" onclick="onClick(this)" alt="xxxxxxxxxxxxx">
-    </div>
-  </div>
-
-  <!-- Modal for full size images on click-->
-  <div id="modal01" class="w3-modal w3-black" style="padding-top:0" onclick="this.style.display='none'">
-    <span class="w3-button w3-black w3-xxlarge w3-display-topright">×</span>
-    <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
-      <img id="img01" class="w3-image">
-      <p id="caption"></p>
-    </div>
-  </div>
-
-  <!-- Services -->
+   <!-- Services -->
   <div class="w3-container" id="services" style="margin-top:75px">
     <h1 class="w3-xxxlarge w3-text-red"><b>Services.</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
-    <p> <a href="{% static '/admin' %}" >Admin </a><br>
-        <a href="{% static '/register/1' %}">register/1 </a><br>
-        <a href="{% static '/statistics/1' %}">statistics/1 </a><br>
-        <a href="{% static '/turnOn' %}">turnOn   </a><br>
-        <a href="{% static '/turnOff' %}">turnOff   </a><br>
-
+    <p> <a href="/admin" >Admin </a><br>
+        <a href="/register/1">register/1 </a><br>
+        <a href="/statistics/1">statistics/1 </a><br>
+        <a href="turnOn">turnOn   </a><br>
+        <a href="/turnOff">turnOff   </a><br>
     </p>
   </div>
 
