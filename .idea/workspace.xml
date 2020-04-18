@@ -5,7 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/regtemp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/regtemp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index_template.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index_template.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,8 +17,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controlwt/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1710">
-              <caret line="22" column="13" lean-forward="true" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+            <state relative-caret-position="289">
+              <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -30,8 +29,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/regtemp/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="455">
-              <caret line="201" column="102" selection-start-line="201" selection-start-column="102" selection-end-line="201" selection-end-column="102" />
+            <state relative-caret-position="211">
+              <caret line="205" column="63" lean-forward="true" selection-start-line="205" selection-start-column="63" selection-end-line="205" selection-end-column="63" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -184,7 +183,8 @@
     <MESSAGE value="index test" />
     <MESSAGE value="index test2" />
     <MESSAGE value="index page" />
-    <option name="LAST_COMMIT_MESSAGE" value="index page" />
+    <MESSAGE value="compute error in t average" />
+    <option name="LAST_COMMIT_MESSAGE" value="compute error in t average" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/regtemp/apps.py">
@@ -295,8 +295,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controlwt/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1710">
-          <caret line="22" column="13" lean-forward="true" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+        <state relative-caret-position="289">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
@@ -305,8 +305,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/regtemp/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="455">
-          <caret line="201" column="102" selection-start-line="201" selection-start-column="102" selection-end-line="201" selection-end-column="102" />
+        <state relative-caret-position="211">
+          <caret line="205" column="63" lean-forward="true" selection-start-line="205" selection-start-column="63" selection-end-line="205" selection-end-column="63" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
