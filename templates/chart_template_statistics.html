@@ -1,5 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Statistics by day</title>
@@ -17,7 +18,7 @@
     <script type="text/javascript">
     var processID;
 
-    function drawCart(){
+    function drawChart(){
          var b = document.getElementById('funchart2').getContext('2d');
          var myLineChart = new Chart(b, {
                    type: 'line',
@@ -66,7 +67,7 @@
                             }}});
     }
 
-    processID = setInterval(drawCart, 2000);
+    processID = setInterval(drawChart, 2000);
 
     </script>
 
