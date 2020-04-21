@@ -11,9 +11,9 @@
         <canvas id="funchart2" width="75" height="50"></canvas>
 	</div>
     <div id="return">
-        <a href="/index">Index</a>
+        <button onclick="drawChart();">Draw</button>
+        <p ><a href="/index">Index</a></p>
     </div>
-    <button onclick="detenerCambioDeColor();">Detener</button>
     <script type="text/javascript">
     var processID;
 
@@ -65,7 +65,7 @@
                                 }]
                             }}});
     }
-    drawChart;
+
     processID = setInterval(drawChart, 5000000);
 
     </script>
