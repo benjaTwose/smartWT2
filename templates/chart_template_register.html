@@ -50,11 +50,11 @@
     </script>
 
   <script>
-    var pagn=1;
+    var pagn={{ nDay }};
     function nextPage() {
       var thisLocation
       if (pagn < 7){
-	    pagn={{ nDay }} + 1;
+	    pagn++;
 	  }
 	  thisLocation= window.location.href;
 	  thisLocation = thisLocation.substring(0, thisLocation.length-1);
@@ -63,7 +63,7 @@
     function prevPage() {
       var thisLocation
       if (pagn > 1){
-	    pagn={{ nDay }} - 1;
+	    pagn--;
 	  }
 	  thisLocation= window.location.href;
 	  thisLocation = thisLocation.substring(0, thisLocation.length-1);
