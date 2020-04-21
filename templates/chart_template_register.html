@@ -50,7 +50,7 @@
     var pagn=0;
     function nextPage() {
       var thisLocation
-	  pagn={% n_day %} + 1;
+	  pagn={{ nDay }} + 1;
 	  thisLocation= window.location.href;
 	  thisLocation = thisLocation.substring(0, thisLocation.length-1);
 	  window.location.replace(thisLocation + pagn);
