@@ -10,9 +10,8 @@
 	<div style="width:75%;">
         <canvas id="funchart2" width="75" height="50"></canvas>
 	</div>
-    <div id="mi_mensaje">
-        <a href="/index">Index</a><br>
-        <p>¡Hola mundo!</p>
+    <div id="return">
+        <a href="/index">Index</a>
     </div>
     <button onclick="detenerCambioDeColor();">Detener</button>
     <script type="text/javascript">
@@ -66,8 +65,8 @@
                                 }]
                             }}});
     }
-
-    processID = setInterval(drawChart, 2000);
+    drawChart;
+    processID = setInterval(drawChart, 5000000);
 
     </script>
 
