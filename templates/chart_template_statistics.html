@@ -5,13 +5,19 @@
     <title>Statistics by day</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
 </head>
-<body>
+<body onload="initDataLoad">
 	<div style="width:75%;">
         <canvas id="funchart2" width="75" height="50"></canvas>
 	</div>
-    <a href="/index">Index</a><br>
-
+    <div id="mi_mensaje">
+        <a href="/index">Index</a><br>
+        <p>¡Hola mundo!</p>
+    </div>
+    <button onclick="detenerCambioDeColor();">Detener</button>
     <script type="text/javascript">
+    var processID;
+
+    function drawCart(){
          var b = document.getElementById('funchart2').getContext('2d');
          var myLineChart = new Chart(b, {
                    type: 'line',
@@ -58,6 +64,9 @@
                                    }
                                 }]
                             }}});
+    }
+
+    processID = setInterval(drawCart, 2000);
 
     </script>
 
