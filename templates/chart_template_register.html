@@ -22,7 +22,7 @@
                    type: 'line',
                    data:
                        {
-                       labels:[{% for i in data %}'{{ datetime_from_utc_to_local(i.date_reg)|time:"H:i" }}',{% endfor %}],
+                       labels:[{% for i in data %}'{{ i.local_date_reg|time:"H:i" }}',{% endfor %}],
                        datasets:
                             [{
                             label:'Temperature',
