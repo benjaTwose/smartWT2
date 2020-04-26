@@ -9,7 +9,7 @@ from django.utils.timezone import make_aware
 
 import logging
 import sys
-
+import time as time2
 
 class RegisterBkp(models.Model):
     """ temperature register in raw data
@@ -233,6 +233,6 @@ def compute_statistics(nday):
 
 
 def datetime_from_utc_to_local(utc_datetime):
-    now_timestamp = time.time()
+    now_timestamp = time2.time()
     offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(now_timestamp)
     return utc_datetime + offset
