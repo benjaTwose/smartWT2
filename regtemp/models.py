@@ -27,6 +27,9 @@ class Register(models.Model):
     date_reg_day = models.IntegerField(default=None, blank=True)
     date_reg = models.DateTimeField()
     raw_temp = models.IntegerField()
+    @property
+    def local_date_reg(self):
+        return datetime_from_utc_to_local(self.date_reg)
 
     def __str__(self):
         return (str(self.id)
@@ -227,3 +230,9 @@ def compute_statistics(nday):
 
     logging.debug("statistics end " + str(datetime.now()))
 
+
+
+def datetime_from_utc_to_local(utc_datetime):
+    now_timestamp = time.time()
+    offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(now_timestamp)
+    return utc_datetime + offset

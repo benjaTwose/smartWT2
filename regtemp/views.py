@@ -10,12 +10,7 @@ from django.http import HttpResponse
 from regtemp.models import Register
 from regtemp.models import compute_statistics
 from regtemp.models import Statistics
-import time
 
-def datetime_from_utc_to_local(utc_datetime):
-    now_timestamp = time.time()
-    offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(now_timestamp)
-    return utc_datetime + offset
 
 def register_temp(request):
     """ This view is a call to register temp.
