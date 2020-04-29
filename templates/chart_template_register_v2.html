@@ -1,0 +1,200 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<title>Smart WT 2</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
+body {font-size:16px;}
+.w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
+.w3-half img:hover{opacity:1}
+</style>
+<body>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
+  <div class="w3-container">
+    <h3 class="w3-padding-64"><b>SmartWT2</b></h3>
+  </div>
+  <div class="w3-bar-block">
+    <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a>
+    <a href="#services" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Services</a>
+    <a href="#admin" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Admin</a>
+
+  </div>
+</nav>
+
+<!-- Top menu on small screens -->
+<header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
+  <a href="javascript:void(0)" class="w3-button w3-red w3-margin-right" onclick="w3_open()">☰</a>
+  <span>B.T.TECH</span>
+</header>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:340px;margin-right:40px">
+
+  <!-- Header -->
+  <div class="w3-container" style="margin-top:80px" id="showcase">
+    <h1 class="w3-jumbo"><b>Smart temperature sensor</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+  </div>
+    <div style="width:75%;" >
+        <button onclick="prevPage();">Previous day</button><button onclick="nextPage();">Next day</button>
+	</div>
+	<div style="width:75%;">
+        <canvas id="funchart2" width="75" height="50"></canvas>
+	</div>
+   <!-- Services -->
+  <div class="w3-container" id="services" style="margin-top:75px" >
+    <h1 class="w3-xxxlarge w3-text-red"><b>Services.</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <table class="w3-table" >
+      <tr>
+        <th>Day</th>
+        <th>Register</th>
+        <th>Statistics</th>
+      </tr>
+      <tr>
+        <td>Monday</td>
+        <td><a href="/register/1"><span class="material-icons">assessment</span></a></td>
+        <td><a href="/statistics/1"><span class="material-icons">assessment</span></a></td>
+      </tr>
+      <tr>
+        <td>Tuesday</td>
+        <td><a href="/register/2"><span class="material-icons">assessment</span></a></td>
+        <td><a href="/statistics/2"><span class="material-icons">assessment</span></a></td>
+      </tr>
+      <tr>
+        <td>Wednesday</td>
+        <td><a href="/register/3"><span class="material-icons">assessment</span></a></td>
+        <td><a href="/statistics/3"><span class="material-icons">assessment</span></a></td>
+      </tr>
+      <tr>
+        <td>Thursday</td>
+        <td><a href="/register/4"><span class="material-icons">assessment</span></a></td>
+        <td><a href="/statistics/4"><span class="material-icons">assessment</span></a></td>
+      </tr>
+      <tr>
+        <td>Friday</td>
+        <td><a href="/register/5"><span class="material-icons">assessment</span></a></td>
+        <td><a href="/statistics/5"><span class="material-icons">assessment</span></a></td>
+      </tr>
+      <tr>
+        <td>Saturday</td>
+        <td><a href="/register/6"><span class="material-icons">assessment</span></a></td>
+        <td><a href="/statistics/6"><span class="material-icons">assessment</span></a></td>
+      </tr>
+      <tr>
+        <td>Sunday</td>
+        <td><a href="/register/7"><span class="material-icons">assessment</span></a></td>
+        <td><a href="/statistics/7"><span class="material-icons">assessment</span></a></td>
+      </tr>
+
+    </table>
+  </div>
+
+  <!-- Admin -->
+  <div class="w3-container" id="admin" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Admin.</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <a href="/admin">Admin</a><br>
+    <a href="/turnOn">turnOn</a><br>
+    <a href="/turnOff">turnOff</a><br>
+    <a href="/compute">compute</a><br>
+    <a href="/apionoff">apionoff</a><br>
+  </div>
+
+
+<!-- End page content -->
+</div>
+
+<!-- W3.CSS Container -->
+<div class="w3-light-grey w3-container w3-padding-32" style="margin-top:75px;padding-right:58px"><p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p></div>
+
+<script>
+// Script to open and close sidebar
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("myOverlay").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("myOverlay").style.display = "none";
+}
+
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+</script>
+    <script type="text/javascript">
+         var b = document.getElementById('funchart2').getContext('2d');
+         var myLineChart = new Chart(b,
+         {
+                   type: 'line',
+                   data:
+                       {
+                       labels:[{% for i in data %}'{{ i.local_date_reg|time:"H:i" }}',{% endfor %}],
+                       datasets:
+                            [{
+                            label:'Temperature',
+                            yAxisID: 't',
+                            pointBorderWidth: 0,
+                            borderColor: 'rgba(255, 99, 132, 0.5)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                            data: [{% for i in data %}{% widthratio i.raw_temp 1000 1 %},{% endfor %}]
+                            }]
+                       },
+                   options:
+                       {
+                       scales: {
+                           xAxes: [{ display:true }],
+                           yAxes: [{
+                               id: 't',
+                               type: 'linear',
+                               position: 'left',
+                               ticks: { beginAtZero:true, }
+                                  }]
+                               }
+                       }
+         });
+
+    </script>
+
+  <script>
+    var pagn={{ nDay }};
+    function nextPage() {
+      var thisLocation
+      if (pagn < 7){
+	    pagn++;
+	  }
+	  thisLocation= window.location.href;
+	  thisLocation = thisLocation.substring(0, thisLocation.length-1);
+	  window.location.replace(thisLocation + pagn);
+    }
+    function prevPage() {
+      var thisLocation
+      if (pagn > 1){
+	    pagn--;
+	  }
+	  thisLocation= window.location.href;
+	  thisLocation = thisLocation.substring(0, thisLocation.length-1);
+	  window.location.replace(thisLocation + pagn);
+    }
+
+  </script>
+</body>
+</html>

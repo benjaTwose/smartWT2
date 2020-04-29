@@ -35,7 +35,7 @@ def view_statistics_data(request, n_day):
 def view_register_data(request, n_day):
     nDay = n_day
     data = Register.objects.filter(date_reg_day=n_day).order_by('date_reg')
-    return render(request, template_name='chart_template_register.html', context={'data': data,'nDay':nDay})
+    return render(request, template_name='chart_template_register_v2.html', context={'data': data,'nDay':nDay})
 
 def view_compute(request, n_day):
     """ nday in isoweek format 1:Monday ..."""
