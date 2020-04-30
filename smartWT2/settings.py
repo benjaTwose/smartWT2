@@ -142,5 +142,5 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = "/var/www/smartWT2/static/"
+STATIC_ROOT = "/var/www/smartwt2/static/"
 
