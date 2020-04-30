@@ -43,7 +43,7 @@ def api_on_off(request):
     it can be called every 5 minutes for example """
     try:
         control_on_off()
-        return HttpResponse("<html><body>ok - call power on/off </body></html>")
+        return HttpResponse("<html><body>call power on/off </body></html>")
     except RuntimeError as e:
         html = "<html><body>error launch auto control power: %s</body></html>" % (e)
         return HttpResponse(html)

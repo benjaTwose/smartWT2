@@ -140,7 +140,7 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/var/www/smartWT2/static/'
 
 STATIC_ROOT = "/var/www/smartWT2/static/"
 

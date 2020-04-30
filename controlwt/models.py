@@ -125,7 +125,7 @@ def control_on_off():
     queryset_st = Statistics.objects.filter(n_day=v_today,
                                             hour_minute__gte=time(hour=v_now.hour, minute=(v_now.minute)),
                                             hour_minute__lte=time(hour=v_now_add.hour, minute=(v_now_add.minute)))
-    """ It's needle to have one register to use statistics"""
+    """ It's needle to have one register per day to use statistics"""
     if len(queryset_st) > 0:
         for field_st in queryset_st:
             try:
@@ -134,7 +134,7 @@ def control_on_off():
                         and field_st.t_control == 1:
 
                     if field_st.t_count>1:
-                        """ It's needle to have more than one counter to use statistics"""
+                        """ It's needle to have more than one counter per minute to use statistics"""
                         logging.debug("control_on_off  -> statistics set -> control_status = 1")
                         control_status = 1
             except RuntimeError as e:
