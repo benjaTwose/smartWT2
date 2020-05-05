@@ -12,14 +12,14 @@ from regtemp.models import compute_statistics
 from regtemp.models import Statistics
 
 
-def register_temp(request):
+def register_temp(request,zone):
     """ This view is a call to register temp.
     it's used as API call for create a new reg in the database
     This is called from crontab or other external program
     """
     is_now = datetime.now()
     v_register = Register()
-    v_register_temp = v_register.reg_temperature()
+    v_register_temp = v_register.reg_temperature(zone)
     html = "<html><body>It is now %s. And temperature is %s</body></html>" % (is_now, v_register_temp)
     return HttpResponse(html)
 

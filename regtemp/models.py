@@ -11,6 +11,10 @@ import logging
 import sys
 import time as time2
 
+class Zone(models.Model):
+    """ different zone to acquire temperature """
+    zone = models.TextField()
+
 class RegisterBkp(models.Model):
     """ temperature register in raw data
     date_reg: data - time temperature read
@@ -18,6 +22,7 @@ class RegisterBkp(models.Model):
     date_reg_day = models.IntegerField(default=None, blank=True)
     date_reg = models.DateTimeField()
     raw_temp = models.IntegerField()
+    t_zone = models.ForeignKey(Zone, on_delete=models.CASCADE)  # index key from zones
 
 
 class Register(models.Model):
@@ -27,6 +32,8 @@ class Register(models.Model):
     date_reg_day = models.IntegerField(default=None, blank=True)
     date_reg = models.DateTimeField()
     raw_temp = models.IntegerField()
+    t_zone = models.ForeignKey(Zone, on_delete=models.CASCADE)  # index key from zones
+
     @property
     def local_date_reg(self):
         return datetime_from_utc_to_local(self.date_reg)
@@ -58,7 +65,7 @@ class Register(models.Model):
             print(e)
             return None
 
-    def reg_temperature(self):
+    def reg_temperature(self,zone):
         """ insert data into register
             :param conn: connection to object
             :param regdata: values for  INSERT  statement
@@ -68,6 +75,7 @@ class Register(models.Model):
             #self.date_reg = make_aware(naive_datetime)
             self.date_reg = datetime.utcnow()
             self.date_reg_day = self.date_reg.isoweekday()
+            self.t_zone = zone
             self.raw_temp = self.get_temp_sens(str(GeneralConfig.objects.get(id=1).datafile))
             self.save()
             return self.raw_temp
@@ -82,6 +90,7 @@ class Statistics(models.Model):
     t_average = models.IntegerField()
     t_count = models.IntegerField()
     t_control = models.BooleanField(default=False)
+    t_zone = models.ForeignKey(Zone, on_delete=models.CASCADE)  # index key from zones
 
     def __str__(self):
         return (str(self.n_day)
