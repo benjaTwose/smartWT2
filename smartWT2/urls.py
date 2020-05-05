@@ -26,7 +26,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     # This path is for create a new temperature register data
-    path('regtemp/<slug:zone>', regtemp_view.register_temp, name='regtemp'),
+    path('regtemp/<slug:t_zone>', regtemp_view.register_temp, name='regtemp'),
     url(r'turnOn', control_view.turn_on, name='turn_on'),
     url(r'turnOff', control_view.turn_off, name='turn_off'),
     path('compute/<int:n_day>', regtemp_view.view_compute, name='Compute'),

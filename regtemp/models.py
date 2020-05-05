@@ -65,7 +65,7 @@ class Register(models.Model):
             print(e)
             return None
 
-    def reg_temperature(self,zone):
+    def reg_temperature(self,t_zone):
         """ insert data into register
             :param conn: connection to object
             :param regdata: values for  INSERT  statement
@@ -75,7 +75,7 @@ class Register(models.Model):
             #self.date_reg = make_aware(naive_datetime)
             self.date_reg = datetime.utcnow()
             self.date_reg_day = self.date_reg.isoweekday()
-            self.t_zone = zone
+            self.t_zone = t_zone
             self.raw_temp = self.get_temp_sens(str(GeneralConfig.objects.get(id=1).datafile))
             self.save()
             return self.raw_temp
