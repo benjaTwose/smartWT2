@@ -81,7 +81,8 @@ class Register(models.Model):
             #self.date_reg = make_aware(naive_datetime)
             self.date_reg = datetime.utcnow()
             self.date_reg_day = self.date_reg.isoweekday()
-            self.t_zone = int(t_zone)
+            zz = Zone.objects.filter(zone=t_zone)
+            self.t_zone = zz
             self.raw_temp = self.get_temp_sens(str(GeneralConfig.objects.get(id=1).datafile))
             self.save()
             return self.raw_temp
