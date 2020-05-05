@@ -15,6 +15,12 @@ class Zone(models.Model):
     """ different zone to acquire temperature """
     zone = models.TextField()
 
+    def __str__(self):
+        return (str(self.id)
+                + " Zone: " + str(self.zone)
+                )
+
+
 class RegisterBkp(models.Model):
     """ temperature register in raw data
     date_reg: data - time temperature read
