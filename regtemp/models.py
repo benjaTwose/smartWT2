@@ -207,6 +207,7 @@ def compute_statistics(nday):
                                 rbkp.date_reg_day = field.date_reg_day
                                 rbkp.date_reg = field.date_reg
                                 rbkp.raw_temp = field.raw_temp
+                                rbkp.t_zone = field.t_zone
                                 rbkp.save()
                                 field.delete()
 
