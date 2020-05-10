@@ -161,7 +161,7 @@ class Statistics(models.Model):
             logging.error("Rate configuration is not set. Can't calculate control trigger")
 
 
-def compute_statistics(nday):
+def compute_statistics(nday,t_zone):
     """
     calculate the statistics from register.
     In first thought it will calculate the media value of every minute, separated in days of week
@@ -179,8 +179,12 @@ def compute_statistics(nday):
         t_days = range(nday, (nday+1))
     else:
         t_days = 0
-
-    queryset = Register.objects.filter(date_reg_day=nday)
+    try:
+        zz = Zone.objects.filter(zone=t_zone).last()
+    except:
+        logging.error("Unexpected error: " + str(sys.exc_info()[0]))
+        raise
+    queryset = Register.objects.filter(date_reg_day=nday,t_zone=zz)
     if len(queryset) > 0 or nday == 8:
         t_hours = range(0, 24)
         t_minutes = range(0, 60)
@@ -191,10 +195,11 @@ def compute_statistics(nday):
                 for i_minute in t_minutes:
 
                     queryset = Register.objects.filter(date_reg_day=i_day,
-                                                       date_reg__time__hour=i_hour, date_reg__time__minute=i_minute)
+                                                       date_reg__time__hour=i_hour, date_reg__time__minute=i_minute,t_zone=zz)
                     logging.debug('calc average day: ' + str(i_day)
                                   + ' - ' + str(time(i_hour, i_minute))
-                                  + ' numreg: ' + str(len(queryset)))
+                                  + ' numreg: ' + str(len(queryset))
+                                  + ' Zone: ' + str(len(queryset)))
                     cnt = 0
                     calc_t_average = 0
                     if len(queryset) > 0:
@@ -221,16 +226,18 @@ def compute_statistics(nday):
                             # Update values if exists
                             # new average -> t_average = temperature + (last average * data count) / (data count + 1)
                             sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute))
-                            sobj.savedata(i_day, i_hour, i_minute, (calc_t_average + (sobj.t_average * sobj.t_count))/(cnt+sobj.t_count), (cnt+sobj.t_count))
+                            sobj.savedata(i_day, i_hour, i_minute, (calc_t_average + (sobj.t_average * sobj.t_count))/(cnt+sobj.t_count), (cnt+sobj.t_count),t_zone=zz)
                             logging.debug('Calc average '
                                           + str(calc_t_average)
                                           + ' objav: ' + str(sobj.t_average)
                                           + ' cnt: ' + str(cnt)
-                                          + ' objcnt:_' + str(sobj.t_count))
+                                          + ' objcnt:_' + str(sobj.t_count)
+                                          + ' Zone:_' + str(sobj.t_zone)
+                                          )
                         except Statistics.DoesNotExist:
                             # Create object values if not exists
                             sobj = Statistics()
-                            Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average/cnt, cnt)
+                            Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average/cnt, cnt,zz)
                             logging.debug('Calc average new reg t: ' + str(calc_t_average) + ' cnt: ' + str(cnt) )
 
                 if len(queryset) > 0:
