@@ -42,7 +42,7 @@ def view_register_data(request, n_day):
 def view_register_hist_data(request):
     is_now = datetime.now()
     last_week = is_now - timedelta(days=6)
-    data = RegisterBkp.objects.filter(data_reg__range=([last_week, is_now])).order_by('date_reg')
+    data = RegisterBkp.objects.filter(date_reg__range=([last_week, is_now])).order_by('date_reg')
     return render(request, template_name='chart_template_register.html', context={'data': data,})
 
 
