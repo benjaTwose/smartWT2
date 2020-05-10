@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.http import HttpResponse
 from regtemp.models import Register
 from regtemp.models import RegisterBkp
