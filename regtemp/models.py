@@ -226,7 +226,7 @@ def compute_statistics(nday,t_zone):
                         try:
                             # Update values if exists
                             # new average -> t_average = temperature + (last average * data count) / (data count + 1)
-                            sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute, t_zone=zz))
+                            sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute,), t_zone=zz)
                             sobj.savedata(i_day, i_hour, i_minute, (calc_t_average + (sobj.t_average * sobj.t_count))/(cnt+sobj.t_count), (cnt+sobj.t_count),zz)
                             logging.debug('Calc average '
                                           + str(calc_t_average)
