@@ -190,7 +190,7 @@ def compute_statistics(nday,t_zone):
         t_hours = range(0, 24)
         t_minutes = range(0, 60)
         #print("ini ", datetime.now(), 'nday -> ', nday, 'range ', t_days)
-        logging.debug("statistics ini " + str(datetime.now()) + 'nday -> ' + str(nday) + 'range ' + str(t_days))
+        logging.debug("statistics ini " + str(datetime.now()) + '-  nday -> ' + str(nday) + ' - range ' + str(t_days))
         for i_day in t_days:
             for i_hour in t_hours:
                 for i_minute in t_minutes:
@@ -226,8 +226,8 @@ def compute_statistics(nday,t_zone):
                         try:
                             # Update values if exists
                             # new average -> t_average = temperature + (last average * data count) / (data count + 1)
-                            sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute))
-                            sobj.savedata(i_day, i_hour, i_minute, (calc_t_average + (sobj.t_average * sobj.t_count))/(cnt+sobj.t_count), (cnt+sobj.t_count),t_zone=zz)
+                            sobj = Statistics.objects.get(n_day=i_day, hour_minute=time(hour=i_hour, minute=i_minute, t_zone=zz))
+                            sobj.savedata(i_day, i_hour, i_minute, (calc_t_average + (sobj.t_average * sobj.t_count))/(cnt+sobj.t_count), (cnt+sobj.t_count),zz)
                             logging.debug('Calc average '
                                           + str(calc_t_average)
                                           + ' objav: ' + str(sobj.t_average)
@@ -238,7 +238,7 @@ def compute_statistics(nday,t_zone):
                         except Statistics.DoesNotExist:
                             # Create object values if not exists
                             sobj = Statistics()
-                            Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average/cnt, cnt,zz)
+                            Statistics.savedata(sobj, i_day, i_hour, i_minute, calc_t_average/cnt, cnt, zz)
                             logging.debug('Calc average new reg t: ' + str(calc_t_average) + ' cnt: ' + str(cnt) )
 
                 if len(queryset) > 0:

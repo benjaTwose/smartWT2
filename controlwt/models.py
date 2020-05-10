@@ -19,10 +19,10 @@ class RPiGpio_Status(models.Model):
 
     """
 
-
     out_1_pin = models.IntegerField()
     out_1_status = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
+    GPIO.setwarnings(False)
 
     def turn_on(self):
         try:
