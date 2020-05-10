@@ -38,6 +38,14 @@ def view_register_data(request, n_day):
     data = Register.objects.filter(date_reg_day=n_day).order_by('date_reg')
     return render(request, template_name='chart_template_register_v2.html', context={'data': data,'nDay':nDay})
 
+
+def view_register_hist_data(request):
+    is_now = datetime.now()
+    last_week = is_now - timedelta(days=6)
+    data = RegisterBkp.objects.filter(data_reg__range=([last_week, is_now])).order_by('date_reg')
+    return render(request, template_name='chart_template_register.html', context={'data': data,})
+
+
 def view_compute(request, n_day,t_zone):
     """ nday in isoweek format 1:Monday ..."""
     if request.method == 'GET':
@@ -59,8 +67,3 @@ def view_compute(request, n_day,t_zone):
     return HttpResponse(html)
 
 
-def view_register_hist_data(request):
-    is_now = datetime.now()
-    last_week = is_now - timedelta(days=6)
-    data = RegisterBkp.objects.filter(date_reg > last_week).order_by('date_reg')
-    return render(request, template_name='chart_template_register.html', context={'data': data,})
