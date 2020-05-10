@@ -8,6 +8,7 @@ from django.shortcuts import render
 from datetime import datetime
 from django.http import HttpResponse
 from regtemp.models import Register
+from regtemp.models import RegisterBkp
 from regtemp.models import compute_statistics
 from regtemp.models import Statistics
 
@@ -56,3 +57,10 @@ def view_compute(request, n_day,t_zone):
 
 
     return HttpResponse(html)
+
+
+def view_register_hist_data(request):
+    is_now = datetime.now()
+    last_week = is_now - datetime.timedelta(days=6)
+    data = RegisterBkp.objects.filter(date_reg > last_week).order_by('date_reg')
+    return render(request, template_name='chart_template_register.html', context={'data': data,})
