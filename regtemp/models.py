@@ -110,11 +110,12 @@ class Statistics(models.Model):
     def hmprint(self):
         return self.hour_minute("%X")
 
-    def savedata(self, v_day, v_hour, v_minute, v_average, v_cnt):
+    def savedata(self, v_day, v_hour, v_minute, v_average, v_cnt, v_zone):
         self.n_day = v_day
         self.hour_minute = time(hour=v_hour, minute=v_minute)
         self.t_average = v_average
         self.t_count = v_cnt
+        self.t_zone = v_zone
         self.save()
         return 0
 
