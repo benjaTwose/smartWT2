@@ -34,5 +34,6 @@ urlpatterns = [
     url(r'apionoff', control_view.api_on_off, name='SetPower'),
     path('statistics/<int:n_day>', regtemp_view.view_statistics_data, name='Statistics'),
     path('register/<int:n_day>', regtemp_view.view_register_data, name='Register'),
+    path('registerlastweek/', regtemp_view.view_register_hist_data, name='RegisterHist'),
     url(r'index',regtemp_view.view_index, name='index'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
